@@ -3,884 +3,749 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LINE 貼圖工作室</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<title>🌿 我的芳療筆記</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --milk: #fdf8f3; --cream: #fff9f4; --border: #e8d5c4; --border2: #d4b89e;
-  --moon: #c9a97a; --moon2: #b8966a; --text: #3a3028; --mid: #7c5c48;
-  --soft: #9c8678; --accent: #f0ddd0; --tag: #e8d5c4; --tagtext: #6b4f3a;
+:root{
+  --pink:#D4A5A5;--pink-soft:#E8C9C9;--pink-pale:#F5E6E6;
+  --cream:#FAF6F0;--cream-dark:#F0E8DE;
+  --brown:#5C4A42;--brown-mid:#7D6458;
+  --gray:#8A8278;--gray-light:#C4BDB7;
+  --white:#FDFAF7;--shadow:rgba(92,74,66,0.10);
+  --red:#C0504D;--red-pale:#FDECEA;
 }
-body { font-family: 'Noto Sans TC', sans-serif; background: var(--milk); color: var(--text); min-height: 100vh; }
-
-/* Header */
-.app-header { background: var(--cream); border-bottom: 1px solid var(--border); padding: 0.8rem 1.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.app-header h1 { font-family: 'Zen Maru Gothic', sans-serif; font-size: 1.1rem; font-weight: 700; color: #5c4433; letter-spacing: 0.05em; }
-.header-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-.tag { display: inline-block; background: var(--tag); color: var(--tagtext); font-size: 0.65rem; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
-.tag.ai { background: var(--moon); color: white; }
-.tag.new { background: #a0c878; color: white; }
-
-/* Layout */
-.workspace { display: grid; grid-template-columns: 270px 1fr 270px; height: calc(100vh - 53px); }
-
-/* Sidebars */
-.sidebar { background: var(--cream); overflow-y: auto; padding: 0.9rem; display: flex; flex-direction: column; gap: 0.8rem; }
-.sidebar.left { border-right: 1px solid var(--border); }
-.sidebar.right { border-left: 1px solid var(--border); }
-
-.sec { font-size: 0.68rem; font-weight: 700; color: var(--soft); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
-
-/* Upload */
-.upload-zone { border: 2px dashed var(--border2); border-radius: 12px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--milk); }
-.upload-zone:hover, .upload-zone.drag-over { border-color: var(--moon); background: #faebd7; }
-.upload-zone .u-icon { font-size: 1.6rem; margin-bottom: 0.3rem; }
-.upload-zone p { font-size: 0.72rem; color: var(--soft); line-height: 1.5; }
-.upload-zone strong { color: var(--moon); }
-#fileInput { display: none; }
-
-/* Thumbs */
-.thumb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
-.thumb { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1.5px solid var(--border); background: repeating-conic-gradient(#ddd 0% 25%, #f5f5f5 0% 50%) 0 0 / 10px 10px; cursor: pointer; transition: border-color 0.15s; }
-.thumb img { width: 100%; height: 100%; object-fit: contain; }
-.thumb:hover { border-color: var(--border2); }
-.thumb.selected { border: 2px solid var(--moon); }
-.thumb .del-btn { position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background: rgba(92,68,51,0.85); color: white; border: none; border-radius: 50%; font-size: 9px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; }
-.thumb:hover .del-btn { opacity: 1; }
-.thumb .badge { position: absolute; bottom: 0; left: 0; right: 0; font-size: 8px; text-align: center; padding: 2px 4px; }
-.badge-done { background: rgba(180,140,90,0.88); color: white; }
-.badge-proc { background: rgba(80,140,220,0.88); color: white; }
-
-/* Controls */
-.ctrl-group { margin-bottom: 0.7rem; }
-.ctrl-label { font-size: 0.72rem; font-weight: 500; color: var(--mid); display: block; margin-bottom: 0.3rem; }
-.pill-group { display: flex; gap: 4px; flex-wrap: wrap; }
-.pill { font-size: 0.63rem; padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border2); background: var(--milk); color: var(--tagtext); cursor: pointer; font-family: 'Noto Sans TC', sans-serif; transition: all 0.12s; white-space: nowrap; }
-.pill:hover { border-color: var(--moon); }
-.pill.active { background: var(--moon); color: white; border-color: var(--moon); }
-.row { display: flex; gap: 6px; align-items: center; }
-.lbl { font-size: 0.68rem; color: var(--soft); flex-shrink: 0; }
-input[type="range"] { accent-color: var(--moon); flex: 1; }
-input[type="color"] { width: 30px; height: 26px; border: 1px solid var(--border2); border-radius: 5px; padding: 2px; background: white; cursor: pointer; }
-select, input[type="text"], input[type="number"] { font-family: 'Noto Sans TC', sans-serif; font-size: 0.75rem; padding: 5px 8px; border: 1px solid var(--border2); border-radius: 8px; background: white; color: var(--text); outline: none; width: 100%; }
-select:focus, input:focus { border-color: var(--moon); box-shadow: 0 0 0 2px rgba(201,169,122,0.18); }
-.divider { height: 1px; background: var(--border); margin: 0.2rem 0; }
-
-/* Buttons */
-.btn { font-family: 'Noto Sans TC', sans-serif; font-size: 0.72rem; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border2); background: var(--milk); color: var(--tagtext); cursor: pointer; transition: all 0.12s; font-weight: 500; white-space: nowrap; }
-.btn:hover { background: var(--accent); border-color: var(--moon); }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn.primary { background: var(--moon); color: white; border-color: var(--moon); }
-.btn.primary:hover { background: var(--moon2); }
-.btn.sm { font-size: 0.65rem; padding: 4px 9px; border-radius: 7px; }
-.btn-row { display: flex; gap: 6px; flex-wrap: wrap; }
-
-/* Status bar */
-.status-bar { background: var(--accent); border-radius: 9px; padding: 0.45rem 0.8rem; font-size: 0.7rem; color: var(--tagtext); display: none; align-items: center; gap: 8px; }
-.status-bar.visible { display: flex; }
-.prog-track { flex: 1; height: 4px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.prog-fill { height: 100%; background: var(--moon); border-radius: 3px; transition: width 0.3s; width: 0%; }
-
-/* Model note */
-.model-note { font-size: 0.67rem; padding: 4px 8px; border-radius: 7px; margin-top: 4px; line-height: 1.5; }
-.model-note.loading { background: #faebd7; color: #9a7040; }
-.model-note.ready { background: #eef5e5; color: #5a8040; }
-
-/* Center canvas area */
-.canvas-area { display: flex; flex-direction: column; align-items: center; background: var(--milk); overflow: hidden; }
-
-/* Tab bar for edit/preview */
-.tab-bar { width: 100%; display: flex; border-bottom: 1px solid var(--border); background: var(--cream); }
-.tab { flex: 1; padding: 0.6rem; font-size: 0.75rem; font-weight: 500; color: var(--soft); text-align: center; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
-.tab.active { color: var(--moon); border-bottom-color: var(--moon); }
-
-/* Edit panel */
-.edit-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; width: 100%; overflow: hidden; }
-.canvas-frame { position: relative; border: 1px solid var(--border2); border-radius: 10px; overflow: hidden; background: repeating-conic-gradient(#ddd 0% 25%, #f0f0f0 0% 50%) 0 0 / 16px 16px; cursor: crosshair; box-shadow: 0 4px 18px rgba(100,70,50,0.1); }
-#mainCanvas { display: block; max-width: 100%; max-height: calc(100vh - 200px); }
-.canvas-meta { font-size: 0.67rem; color: var(--soft); margin-top: 0.5rem; }
-
-/* Preview panel */
-.preview-panel { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: flex-start; padding: 1rem; width: 100%; overflow-y: auto; gap: 1rem; }
-.preview-panel.visible { display: flex; }
-.edit-panel.hidden { display: none; }
-
-.preview-bg-bar { display: flex; gap: 8px; align-items: center; }
-
-/* LINE Chat simulation */
-.line-chat { width: 100%; max-width: 360px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08); }
-.line-chat-header { padding: 10px 14px; font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.line-chat-header .avatar { width: 28px; height: 28px; border-radius: 50%; background: #c8e6c9; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-.line-messages { padding: 12px 10px; display: flex; flex-direction: column; gap: 10px; min-height: 180px; }
-.line-msg { display: flex; align-items: flex-end; gap: 6px; }
-.line-msg.me { flex-direction: row-reverse; }
-.line-msg .bubble { max-width: 70%; padding: 8px 12px; border-radius: 18px; font-size: 0.75rem; line-height: 1.5; }
-.line-msg.other .bubble { background: white; color: #333; border-radius: 4px 18px 18px 18px; }
-.line-msg.me .bubble { color: white; border-radius: 18px 4px 18px 18px; }
-.line-sticker-preview { max-width: 120px; max-height: 103px; object-fit: contain; }
-
-/* Dark theme chat */
-.line-chat.dark .line-chat-header { background: #1a1a2e; color: #eee; }
-.line-chat.dark .line-messages { background: #16213e; }
-.line-chat.dark .line-msg.other .bubble { background: #0f3460; color: #eee; }
-.line-chat.dark .line-msg.me .bubble { background: #00b900; }
-
-/* Light theme chat */
-.line-chat.light .line-chat-header { background: #f5f5f5; color: #333; }
-.line-chat.light .line-messages { background: #e5ddd5; }
-.line-chat.light .line-msg.other .bubble { background: white; color: #333; }
-.line-chat.light .line-msg.me .bubble { background: #00b900; }
-
-.preview-label { font-size: 0.7rem; color: var(--soft); font-weight: 500; }
-
-/* Text layers */
-.layer-list { display: flex; flex-direction: column; gap: 4px; max-height: 90px; overflow-y: auto; }
-.layer-item { display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: var(--accent); border-radius: 6px; font-size: 0.7rem; color: var(--tagtext); cursor: pointer; border: 1px solid transparent; transition: border-color 0.12s; }
-.layer-item:hover { border-color: var(--border2); }
-.layer-item.selected { border-color: var(--moon); background: #faebd7; }
-.layer-item span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.layer-item .layer-del { background: none; border: none; color: var(--soft); cursor: pointer; font-size: 11px; padding: 0; }
-
-.empty-hint { text-align: center; padding: 1.2rem 0.5rem; color: var(--soft); font-size: 0.72rem; line-height: 1.6; }
-
-/* Border preview swatch */
-.swatch { width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--border2); cursor: pointer; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);color:var(--brown);min-height:100vh;padding-bottom:84px}
+.header{background:var(--white);padding:18px 20px 14px;border-bottom:1.5px solid var(--pink-pale);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px var(--shadow)}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:2px;color:var(--brown)}
+.header-title span{color:var(--pink)}
+.header-sub{font-size:10px;color:var(--gray);letter-spacing:3px;margin-top:2px}
+.page{display:none;padding:14px 14px 0}.page.active{display:block}
+.search-wrap{position:relative;margin-bottom:12px}
+.search-input{width:100%;padding:11px 16px 11px 40px;border:1.5px solid var(--pink-soft);border-radius:24px;background:var(--white);font-family:inherit;font-size:14px;color:var(--brown);outline:none;transition:border-color .2s,box-shadow .2s}
+.search-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(212,165,165,.15)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--gray-light)}
+.chips{display:flex;gap:7px;flex-wrap:nowrap;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{padding:5px 13px;border-radius:20px;font-size:11px;white-space:nowrap;border:1.5px solid var(--pink-soft);background:var(--white);color:var(--gray);cursor:pointer;transition:all .2s;flex-shrink:0}
+.chip.active{background:var(--pink);border-color:var(--pink);color:var(--white)}
+.card-grid{display:flex;flex-direction:column;gap:9px}
+.oil-card{background:var(--white);border-radius:16px;padding:14px;box-shadow:0 2px 10px var(--shadow);cursor:pointer;transition:transform .15s;border:1px solid var(--pink-pale);display:flex;align-items:center;gap:12px}
+.oil-card:active{transform:scale(.98)}
+.oil-icon{width:48px;height:48px;border-radius:12px;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden}
+.oil-icon img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+.oil-name{font-size:15px;font-weight:500;color:var(--brown);margin-bottom:1px}
+.oil-name-en{font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--gray);letter-spacing:1px}
+.oil-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 8px;border-radius:10px;background:var(--pink-pale);color:var(--pink)}
+.tag.blue{background:#E3EDF5;color:#7AABBF}.tag.green{background:#E5F0E8;color:#7AAF89}
+.oil-arrow{color:var(--gray-light);font-size:16px;flex-shrink:0}
+.recipe-card{background:var(--white);border-radius:16px;padding:14px;box-shadow:0 2px 10px var(--shadow);border:1px solid var(--pink-pale);cursor:pointer;transition:transform .15s;margin-bottom:9px}
+.recipe-card:active{transform:scale(.98)}
+.recipe-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.recipe-name{font-size:15px;font-weight:500;color:var(--brown);flex:1;padding-right:8px}
+.recipe-method{font-size:10px;padding:3px 9px;border-radius:10px;background:var(--cream-dark);color:var(--brown-mid);flex-shrink:0}
+.recipe-purpose{font-size:12px;color:var(--gray);margin-bottom:8px}
+.recipe-oils{display:flex;gap:5px;flex-wrap:wrap}
+.recipe-oil-pill{font-size:11px;padding:3px 10px;border-radius:10px;background:var(--pink-pale);color:var(--brown-mid);display:flex;align-items:center;gap:3px}
+.pill-drops{color:var(--pink);font-size:10px;font-weight:500}
+.recipe-note{margin-top:8px;font-size:11px;color:var(--gray);padding-top:7px;border-top:1px solid var(--cream-dark);line-height:1.6}
+.recipe-caution{margin-top:6px;font-size:11px;color:#9A7020;background:#FFF8E7;border-radius:8px;padding:6px 10px}
+/* Detail */
+.detail-view{display:none;position:fixed;inset:0;z-index:200;background:var(--cream);overflow-y:auto}
+.detail-view.open{display:block}
+.detail-header{background:var(--white);padding:14px 18px;display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--pink-pale);position:sticky;top:0;z-index:10}
+.back-btn{font-size:22px;cursor:pointer;color:var(--pink);background:none;border:none;padding:0 4px}
+.detail-title{font-size:17px;font-weight:500;color:var(--brown);flex:1}
+.detail-title-en{font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--gray);letter-spacing:2px}
+.detail-edit-btn{background:var(--cream-dark);border:none;border-radius:20px;padding:6px 12px;font-size:12px;color:var(--brown-mid);cursor:pointer;white-space:nowrap}
+.detail-del-btn{background:var(--red-pale);border:none;border-radius:20px;padding:6px 10px;font-size:13px;color:var(--red);cursor:pointer}
+.detail-body{padding:14px}
+.detail-hero{background:linear-gradient(135deg,var(--pink-pale),var(--cream-dark));border-radius:20px;padding:22px;margin-bottom:14px;text-align:center;border:1px solid var(--pink-soft)}
+.detail-hero-img{width:90px;height:90px;border-radius:16px;object-fit:cover;margin:0 auto 10px;display:block}
+.detail-hero-icon{font-size:44px;margin-bottom:8px}
+.detail-hero-name{font-size:20px;font-weight:500;color:var(--brown)}
+.detail-hero-en{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gray);letter-spacing:2px;font-style:italic}
+.detail-hero-badges{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.section{background:var(--white);border-radius:16px;padding:14px;margin-bottom:10px;border:1px solid var(--pink-pale);box-shadow:0 1px 6px var(--shadow)}
+.section-title{font-size:11px;letter-spacing:2px;color:var(--gray);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--pink-pale)}
+.section-content{font-size:13px;line-height:1.9;color:var(--brown-mid)}
+.bullet-list{list-style:none}
+.bullet-list li{padding:4px 0 4px 14px;position:relative;font-size:13px;color:var(--brown-mid);line-height:1.6}
+.bullet-list li::before{content:'·';position:absolute;left:0;color:var(--pink);font-size:18px;line-height:1.2}
+.warning-box{background:#FFF8E7;border-radius:10px;padding:10px 12px;border-left:3px solid #F0C84B;font-size:12px;color:#7A6520;line-height:1.7}
+.personal-note{background:var(--pink-pale);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--brown-mid);line-height:1.8;font-style:italic}
+/* Tips */
+.tip-card{background:var(--white);border-radius:16px;padding:14px;margin-bottom:9px;border:1px solid var(--pink-pale);box-shadow:0 2px 8px var(--shadow)}
+.tip-symptom{font-size:15px;font-weight:500;color:var(--brown);margin-bottom:4px}
+.tip-method{font-size:11px;color:var(--gray);margin-bottom:7px}
+.dilution-section{background:var(--white);border-radius:16px;padding:14px;margin-bottom:10px;border:1px solid var(--pink-pale);box-shadow:0 1px 6px var(--shadow)}
+.ratio-grid{display:grid;gap:6px}
+.ratio-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:10px;background:var(--cream)}
+.ratio-row:nth-child(even){background:var(--pink-pale)}
+.ratio-label{font-size:13px;color:var(--brown-mid)}
+.ratio-value{font-size:13px;color:var(--pink);font-weight:500}
+.dilution-table-wrap{overflow-x:auto}
+.dilution-table{width:100%;border-collapse:collapse;font-size:11px}
+.dilution-table th{background:var(--pink-pale);color:var(--brown);padding:6px 8px;text-align:center;white-space:nowrap}
+.dilution-table td{padding:5px 8px;text-align:center;border-bottom:1px solid var(--cream-dark);color:var(--brown-mid);white-space:nowrap}
+.conc-label{font-weight:500;color:var(--pink)}
+.calc-container{background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--pink-pale);margin-bottom:10px}
+.calc-frame{width:100%;border:none;min-height:600px;display:block}
+.section-header{font-size:11px;letter-spacing:3px;color:var(--gray);margin:16px 0 8px}
+/* FAB */
+.fab{position:fixed;bottom:94px;right:18px;width:50px;height:50px;border-radius:50%;background:var(--pink);border:none;box-shadow:0 4px 16px rgba(212,165,165,.5);font-size:24px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:50;transition:transform .2s}
+.fab:active{transform:scale(.92)}
+/* Bottom Nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--pink-pale);display:flex;box-shadow:0 -2px 12px var(--shadow);z-index:100}
+.bnav-btn{flex:1;padding:10px 4px 14px;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;color:var(--gray-light);transition:color .2s;font-size:10px;letter-spacing:.5px}
+.bnav-btn.active{color:var(--pink)}
+.bnav-btn .nav-icon{font-size:20px}
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(92,74,66,.45);backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex;align-items:flex-end}
+.modal-sheet{background:var(--white);width:100%;border-radius:24px 24px 0 0;padding:18px 18px 40px;max-height:90vh;overflow-y:auto}
+.modal-handle{width:36px;height:4px;background:var(--gray-light);border-radius:2px;margin:0 auto 18px}
+.modal-title{font-size:16px;font-weight:500;margin-bottom:18px;color:var(--brown)}
+.modal-options{display:flex;gap:10px}
+.modal-option{flex:1;background:var(--cream);border-radius:14px;padding:18px 10px;text-align:center;cursor:pointer;border:1.5px solid var(--pink-pale)}
+.modal-option:active{background:var(--pink-pale)}
+.modal-option-icon{font-size:26px;margin-bottom:6px}
+.modal-option-label{font-size:11px;color:var(--brown-mid)}
+/* Form */
+.form-group{margin-bottom:14px}
+.form-label{font-size:11px;letter-spacing:1px;color:var(--gray);margin-bottom:5px;display:block}
+.form-input,.form-textarea,.form-select{width:100%;padding:10px 14px;border:1.5px solid var(--pink-soft);border-radius:12px;background:var(--cream);font-family:inherit;font-size:13px;color:var(--brown);outline:none}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--pink);background:var(--white)}
+.form-textarea{resize:vertical;min-height:80px;line-height:1.6}
+.form-select{appearance:none;-webkit-appearance:none}
+.form-row{display:flex;gap:10px}.form-row .form-group{flex:1}
+.form-btn-row{display:flex;gap:10px;margin-top:4px}
+.btn-primary{flex:1;padding:13px;background:var(--pink);border:none;border-radius:14px;color:white;font-size:14px;font-family:inherit;cursor:pointer;font-weight:500}
+.btn-secondary{flex:1;padding:13px;background:var(--cream-dark);border:none;border-radius:14px;color:var(--brown-mid);font-size:14px;font-family:inherit;cursor:pointer}
+.img-upload-box{width:80px;height:80px;border-radius:14px;border:2px dashed var(--pink-soft);background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex-shrink:0}
+.img-upload-box img{width:100%;height:100%;object-fit:cover}
+.upload-icon{font-size:22px;color:var(--gray-light)}
+.upload-label{font-size:9px;color:var(--gray-light);margin-top:2px}
+/* Confirm */
+.confirm-overlay{display:none;position:fixed;inset:0;z-index:400;background:rgba(92,74,66,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
+.confirm-overlay.open{display:flex}
+.confirm-box{background:var(--white);border-radius:20px;padding:24px;width:100%;max-width:320px;text-align:center}
+.confirm-icon{font-size:36px;margin-bottom:12px}
+.confirm-title{font-size:16px;font-weight:500;color:var(--brown);margin-bottom:8px}
+.confirm-msg{font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:20px}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-family:inherit;font-size:13px;cursor:pointer}
+.confirm-cancel{background:var(--cream-dark);color:var(--brown-mid)}
+.confirm-delete{background:var(--red);color:white}
+/* Toast */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--brown);color:white;padding:10px 20px;border-radius:20px;font-size:12px;opacity:0;transition:all .3s;z-index:500;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Loading */
+.loading-screen{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+.loading-screen.hidden{display:none}
+.loading-logo{font-size:36px}
+.loading-text{font-size:12px;color:var(--gray);letter-spacing:3px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:24px;height:24px;border:2px solid var(--pink-pale);border-top-color:var(--pink);border-radius:50%;animation:spin .7s linear infinite}
+.empty-state{text-align:center;padding:40px 20px;color:var(--gray-light)}
+.empty-state-icon{font-size:36px;margin-bottom:10px}
+.empty-state-text{font-size:13px}
 </style>
 </head>
 <body>
 
-<header class="app-header">
-  <h1>🪄 LINE 貼圖工作室</h1>
-  <div class="header-tags">
-    <span class="tag">批量上傳</span>
-    <span class="tag ai">✨ AI 去背</span>
-    <span class="tag new">邊框</span>
-    <span class="tag new">預覽模擬</span>
-    <span class="tag">ZIP 下載</span>
-  </div>
-</header>
-
-<div class="workspace">
-
-  <!-- LEFT -->
-  <aside class="sidebar left">
-
-    <div>
-      <div class="sec">上傳圖片</div>
-      <div class="upload-zone" id="uploadZone">
-        <div class="u-icon">🖼️</div>
-        <p><strong>點擊或拖曳</strong>上傳圖片<br>PNG / JPG / WebP · 可多選</p>
-      </div>
-      <input type="file" id="fileInput" multiple accept="image/*">
-    </div>
-
-    <div>
-      <div class="sec">圖片列表</div>
-      <div class="thumb-grid" id="thumbGrid"></div>
-      <div id="emptyHint" class="empty-hint">尚未上傳圖片</div>
-    </div>
-
-    <div style="margin-top:auto; display:flex; flex-direction:column; gap:6px;">
-      <div class="btn-row">
-        <button class="btn primary" id="processAllBtn" style="flex:1">✨ 全部處理</button>
-        <button class="btn" id="downloadAllBtn">📦 ZIP</button>
-      </div>
-      <div class="status-bar" id="statusBar">
-        <span id="statusText">處理中...</span>
-        <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-        <span id="progNum">0%</span>
-      </div>
-    </div>
-
-  </aside>
-
-  <!-- CENTER -->
-  <main class="canvas-area">
-    <div class="tab-bar">
-      <div class="tab active" id="tabEdit">✏️ 編輯</div>
-      <div class="tab" id="tabPreview">👁 LINE 預覽模擬</div>
-    </div>
-
-    <!-- Edit -->
-    <div class="edit-panel" id="editPanel">
-      <div class="canvas-frame">
-        <canvas id="mainCanvas" width="370" height="320"></canvas>
-      </div>
-      <div class="canvas-meta" id="canvasMeta">370 × 320 px · 選取左側圖片開始編輯</div>
-    </div>
-
-    <!-- Preview -->
-    <div class="preview-panel" id="previewPanel">
-      <div class="preview-bg-bar">
-        <span class="preview-label">背景：</span>
-        <button class="pill active" data-theme="light" id="themeLight">☀️ 白色底</button>
-        <button class="pill" data-theme="dark" id="themeDark">🌙 深色底</button>
-      </div>
-
-      <div class="line-chat light" id="lineChat">
-        <div class="line-chat-header">
-          <div class="avatar">🐱</div>
-          <span>小貓咪</span>
-        </div>
-        <div class="line-messages" id="lineMessages">
-          <div class="line-msg other">
-            <div class="bubble">你好！這張貼圖好可愛 😊</div>
-          </div>
-          <div class="line-msg me" id="stickerMsg">
-            <img class="line-sticker-preview" id="stickerPreviewImg" src="" alt="貼圖預覽">
-          </div>
-          <div class="line-msg me">
-            <div class="bubble">哈哈謝謝！</div>
-          </div>
-          <div class="line-msg other">
-            <div class="bubble">你自己做的嗎？好厲害！</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center;">
-        <div>
-          <div class="preview-label" style="margin-bottom:4px; text-align:center;">深色底預覽</div>
-          <div class="line-chat dark" style="width:160px;">
-            <div class="line-chat-header"><div class="avatar" style="background:#0f3460">🐱</div><span>小貓咪</span></div>
-            <div class="line-messages" style="padding:8px; min-height:100px; display:flex; align-items:center; justify-content:center;">
-              <img class="line-sticker-preview" id="stickerDark" src="" style="max-width:90px; max-height:78px;">
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="preview-label" style="margin-bottom:4px; text-align:center;">白色底預覽</div>
-          <div class="line-chat light" style="width:160px;">
-            <div class="line-chat-header"><div class="avatar">🐱</div><span>小貓咪</span></div>
-            <div class="line-messages" style="padding:8px; min-height:100px; display:flex; align-items:center; justify-content:center;">
-              <img class="line-sticker-preview" id="stickerLight" src="" style="max-width:90px; max-height:78px;">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- RIGHT -->
-  <aside class="sidebar right">
-
-    <!-- Size -->
-    <div class="ctrl-group">
-      <div class="sec">LINE 貼圖尺寸</div>
-      <div class="pill-group">
-        <button class="pill active" data-w="370" data-h="320">主圖 370×320</button>
-        <button class="pill" data-w="96" data-h="74">Tab 96×74</button>
-        <button class="pill" data-w="240" data-h="240">方形 240×240</button>
-        <button class="pill" data-w="320" data-h="270">動態 320×270</button>
-      </div>
-    </div>
-
-    <!-- BG removal -->
-    <div class="ctrl-group">
-      <span class="ctrl-label">去背方式</span>
-      <div class="pill-group">
-        <button class="pill active" data-method="ai">🤖 AI 去背</button>
-        <button class="pill" data-method="threshold">色彩閾值</button>
-        <button class="pill" data-method="white">去白背景</button>
-        <button class="pill" data-method="none">不去背</button>
-      </div>
-      <div class="model-note loading" id="modelNote">⏳ AI 模型載入中...</div>
-    </div>
-
-    <!-- Padding -->
-    <div class="ctrl-group">
-      <span class="ctrl-label">邊距留白</span>
-      <div class="row">
-        <input type="range" id="padding" min="0" max="30" value="8">
-        <span class="lbl" id="paddingVal">8px</span>
-      </div>
-    </div>
-
-    <!-- ── NEW: Border ── -->
-    <div class="ctrl-group">
-      <span class="ctrl-label">去背後邊框</span>
-      <div class="row" style="margin-bottom:5px;">
-        <input type="checkbox" id="borderEnabled" style="width:auto; accent-color:var(--moon);">
-        <span class="lbl">啟用邊框</span>
-      </div>
-      <div id="borderOptions" style="opacity:0.4; pointer-events:none; display:flex; flex-direction:column; gap:6px;">
-        <div class="row">
-          <span class="lbl">顏色</span>
-          <input type="color" id="borderColor" value="#ffffff">
-          <span class="lbl">粗細</span>
-          <input type="range" id="borderWidth" min="1" max="20" value="4" style="flex:1">
-          <span class="lbl" id="borderWidthVal">4px</span>
-        </div>
-        <div class="row">
-          <span class="lbl">樣式</span>
-          <div class="pill-group">
-            <button class="pill active" data-bstyle="outer">外框</button>
-            <button class="pill" data-bstyle="shadow">陰影</button>
-            <button class="pill" data-bstyle="glow">發光</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Process -->
-    <div class="btn-row">
-      <button class="btn" id="processOneBtn" style="flex:1">處理選中圖片</button>
-      <button class="btn sm" id="exportOneBtn">💾 匯出</button>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Text -->
-    <div>
-      <div class="sec">文字設定</div>
-
-      <div class="ctrl-group">
-        <span class="ctrl-label">文字內容</span>
-        <input type="text" id="textInput" placeholder="輸入貼圖文字...">
-      </div>
-
-      <div class="ctrl-group">
-        <span class="ctrl-label">字體</span>
-        <select id="fontSelect">
-          <option value="'Zen Maru Gothic', sans-serif">Zen Maru Gothic（圓潤）</option>
-          <option value="'Noto Sans TC', sans-serif">Noto Sans TC（正式）</option>
-          <option value="Georgia, serif">Georgia（書法感）</option>
-          <option value="'Courier New', monospace">Courier New（打字機）</option>
-          <option value="Impact, sans-serif">Impact（粗獷）</option>
-        </select>
-      </div>
-
-      <div class="ctrl-group">
-        <span class="ctrl-label">字體大小</span>
-        <div class="row">
-          <input type="range" id="fontSize" min="12" max="80" value="32">
-          <span class="lbl" id="fontSizeVal">32px</span>
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <span class="ctrl-label">字色 / 描邊</span>
-        <div class="row">
-          <span class="lbl">字色</span>
-          <input type="color" id="textColor" value="#ffffff">
-          <span class="lbl">描邊</span>
-          <input type="color" id="strokeColor" value="#333333">
-          <span class="lbl">粗</span>
-          <input type="range" id="strokeWidth" min="0" max="10" value="2" style="width:44px;flex:unset">
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <span class="ctrl-label">位置（可直接拖曳）</span>
-        <div class="row">
-          <span class="lbl">X</span>
-          <input type="number" id="textX" value="185" style="width:55px">
-          <span class="lbl">Y</span>
-          <input type="number" id="textY" value="280" style="width:55px">
-        </div>
-      </div>
-
-      <div class="ctrl-group">
-        <span class="ctrl-label">文字圖層</span>
-        <div class="layer-list" id="layerList"></div>
-        <div class="row" style="margin-top:5px;">
-          <button class="btn sm" id="addTextBtn">＋ 新增</button>
-          <button class="btn sm" id="delTextBtn">✕ 刪除</button>
-        </div>
-      </div>
-    </div>
-
-  </aside>
+<!-- Loading -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo">🌿</div>
+  <div class="spinner"></div>
+  <div class="loading-text">載入中…</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<div class="header">
+  <div class="header-title">🌿 <span>Aroma</span> Notes</div>
+  <div class="header-sub">我的芳療筆記本</div>
+</div>
+
+<!-- 精油百科 -->
+<div id="page-oils" class="page active">
+  <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" placeholder="搜尋精油名稱、功效…" oninput="filterOils(this.value)"></div>
+  <div class="chips">
+    <button class="chip active" onclick="filterByType('all',this)">全部</button>
+    <button class="chip" onclick="filterByType('單方',this)">單方</button>
+    <button class="chip" onclick="filterByType('複方',this)">複方</button>
+    <button class="chip" onclick="filterByType('皮膚',this)">皮膚</button>
+    <button class="chip" onclick="filterByType('情緒',this)">情緒</button>
+    <button class="chip" onclick="filterByType('呼吸',this)">呼吸</button>
+    <button class="chip" onclick="filterByType('疼痛',this)">疼痛</button>
+  </div>
+  <div class="card-grid" id="oils-list"></div>
+</div>
+
+<!-- 配方集 -->
+<div id="page-recipes" class="page">
+  <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" placeholder="搜尋配方名稱、用途…" oninput="filterRecipes(this.value)"></div>
+  <div class="chips">
+    <button class="chip active" onclick="filterRecipeType('all',this)">全部</button>
+    <button class="chip" onclick="filterRecipeType('擴香',this)">擴香</button>
+    <button class="chip" onclick="filterRecipeType('塗抹',this)">塗抹</button>
+    <button class="chip" onclick="filterRecipeType('香水',this)">香水</button>
+    <button class="chip" onclick="filterRecipeType('膏體',this)">膏體</button>
+    <button class="chip" onclick="filterRecipeType('情緒',this)">情緒</button>
+  </div>
+  <div id="recipes-list"></div>
+</div>
+
+<!-- 使用技巧 -->
+<div id="page-tips" class="page">
+  <div class="section-header">稀釋比例參考</div>
+  <div class="dilution-section"><div class="ratio-grid">
+    <div class="ratio-row"><span class="ratio-label">👶 嬰兒</span><span class="ratio-value">0.5 – 1%</span></div>
+    <div class="ratio-row"><span class="ratio-label">🧒 小孩 / 老人</span><span class="ratio-value">&lt; 1%</span></div>
+    <div class="ratio-row"><span class="ratio-label">🌸 臉部</span><span class="ratio-value">1 – 2%</span></div>
+    <div class="ratio-row"><span class="ratio-label">🌿 一般芳療保養</span><span class="ratio-value">3%</span></div>
+    <div class="ratio-row"><span class="ratio-label">🩹 療效 – 外傷</span><span class="ratio-value">5 – 10%</span></div>
+    <div class="ratio-row"><span class="ratio-label">💊 療效 – 局部</span><span class="ratio-value">10%</span></div>
+    <div class="ratio-row"><span class="ratio-label">🚨 急救</span><span class="ratio-value">&gt; 10%</span></div>
+  </div></div>
+  <div class="section-header">稀釋濃度表（精油滴數）</div>
+  <div class="dilution-section"><div class="dilution-table-wrap">
+    <table class="dilution-table">
+      <thead><tr><th>濃度</th><th>5ml</th><th>10ml</th><th>15ml</th><th>20ml</th><th>30ml</th><th>40ml</th><th>50ml</th></tr></thead>
+      <tbody>
+        <tr><td class="conc-label">0.5%</td><td>-</td><td>1</td><td>-</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+        <tr><td class="conc-label">1%</td><td>1</td><td>2</td><td>3</td><td>4</td><td>6</td><td>8</td><td>10</td></tr>
+        <tr><td class="conc-label">2%</td><td>2</td><td>4</td><td>6</td><td>8</td><td>12</td><td>16</td><td>20</td></tr>
+        <tr><td class="conc-label">3%</td><td>3</td><td>6</td><td>9</td><td>12</td><td>18</td><td>24</td><td>30</td></tr>
+        <tr><td class="conc-label">4%</td><td>4</td><td>8</td><td>12</td><td>16</td><td>24</td><td>32</td><td>40</td></tr>
+        <tr><td class="conc-label">5%</td><td>5</td><td>10</td><td>15</td><td>20</td><td>30</td><td>40</td><td>50</td></tr>
+        <tr><td class="conc-label">6%</td><td>6</td><td>12</td><td>18</td><td>24</td><td>36</td><td>48</td><td>60</td></tr>
+        <tr><td class="conc-label">7%</td><td>7</td><td>14</td><td>21</td><td>28</td><td>42</td><td>56</td><td>70</td></tr>
+        <tr><td class="conc-label">8%</td><td>8</td><td>16</td><td>24</td><td>32</td><td>48</td><td>64</td><td>80</td></tr>
+        <tr><td class="conc-label">9%</td><td>9</td><td>18</td><td>27</td><td>36</td><td>54</td><td>72</td><td>90</td></tr>
+        <tr><td class="conc-label">10%</td><td>10</td><td>20</td><td>30</td><td>40</td><td>60</td><td>80</td><td>100</td></tr>
+      </tbody>
+    </table>
+  </div></div>
+  <div class="section-header">精油濃度計算機</div>
+  <div class="calc-container"><iframe class="calc-frame" src="https://sherrywithlove.github.io/calculator/calculator.html" loading="lazy"></iframe></div>
+  <div class="section-header">手部穴位按摩</div>
+  <div class="tip-card"><div class="tip-symptom">🔴 鼻塞</div><div class="tip-method">由下而上按摩中指</div><div class="recipe-oils"><span class="recipe-oil-pill">Raven</span><span class="recipe-oil-pill">R.C.</span></div></div>
+  <div class="tip-card"><div class="tip-symptom">😬 磨牙</div><div class="tip-method">由下而上按摩食指</div><div class="recipe-oils"><span class="recipe-oil-pill">Valor</span><span class="recipe-oil-pill">薰衣草</span></div></div>
+  <div class="tip-card"><div class="tip-symptom">🔵 肩頸痛</div><div class="tip-method">按摩中指旁穴位</div><div class="recipe-oils"><span class="recipe-oil-pill">Deep Relief</span><span class="recipe-oil-pill">Copaiba</span></div></div>
+  <div class="tip-card"><div class="tip-symptom">🫁 氣管不適</div><div class="tip-method">按摩大拇指第一節</div><div class="recipe-oils"><span class="recipe-oil-pill">Raven</span><span class="recipe-oil-pill">R.C.</span></div></div>
+  <div class="tip-card"><div class="tip-symptom">🔔 耳鳴</div><div class="tip-method">在手心上半部打圈</div><div class="recipe-oils"><span class="recipe-oil-pill">Helichrysum</span><span class="recipe-oil-pill">Purification</span></div></div>
+  <div class="tip-card"><div class="tip-symptom">🌧️ 心情不佳</div><div class="tip-method">來回按摩手心上半部</div><div class="recipe-oils"><span class="recipe-oil-pill">Joy</span><span class="recipe-oil-pill">Stress Away</span></div></div>
+  <div class="section-header">旅行必帶清單</div>
+  <div class="tip-card">
+    <div class="tip-symptom">✈️ 出門旅行推薦攜帶</div>
+    <div class="tip-method">裝入 5ml v6 空瓶</div>
+    <div class="recipe-oils" style="flex-wrap:wrap;margin-top:6px">
+      <span class="recipe-oil-pill">白使者</span><span class="recipe-oil-pill">神乳香</span><span class="recipe-oil-pill">聖木</span><span class="recipe-oil-pill">樂C</span><span class="recipe-oil-pill">悠暢</span><span class="recipe-oil-pill">薄荷</span><span class="recipe-oil-pill">薰衣草</span><span class="recipe-oil-pill">檸檬</span><span class="recipe-oil-pill">樂自在</span>
+    </div>
+    <div class="recipe-note">人不舒服、痛、痠、心情低落 → 白使者先用上就對了</div>
+  </div>
+</div>
+
+<!-- Detail: 精油 -->
+<div class="detail-view" id="oil-detail">
+  <div class="detail-header">
+    <button class="back-btn" onclick="closeDetail('oil-detail')">←</button>
+    <div style="flex:1"><div class="detail-title" id="detail-name"></div><div class="detail-title-en" id="detail-en"></div></div>
+    <button class="detail-edit-btn" id="oil-edit-btn">✏️ 編輯</button>
+    <button class="detail-del-btn" id="oil-del-btn">🗑</button>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+
+<!-- Detail: 配方 -->
+<div class="detail-view" id="recipe-detail">
+  <div class="detail-header">
+    <button class="back-btn" onclick="closeDetail('recipe-detail')">←</button>
+    <div style="flex:1"><div class="detail-title" id="r-detail-name"></div></div>
+    <button class="detail-edit-btn" id="recipe-edit-btn">✏️ 編輯</button>
+    <button class="detail-del-btn" id="recipe-del-btn">🗑</button>
+  </div>
+  <div class="detail-body" id="r-detail-body"></div>
+</div>
+
+<button class="fab" onclick="openAddChoice()">＋</button>
+
+<!-- Add Choice -->
+<div class="modal-overlay" id="add-choice-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">新增</div>
+    <div class="modal-options">
+      <div class="modal-option" onclick="document.getElementById('add-choice-modal').classList.remove('open');openOilForm()">
+        <div class="modal-option-icon">🌸</div><div class="modal-option-label">新增精油</div>
+      </div>
+      <div class="modal-option" onclick="document.getElementById('add-choice-modal').classList.remove('open');openRecipeForm()">
+        <div class="modal-option-icon">📋</div><div class="modal-option-label">新增配方</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Oil Form -->
+<div class="modal-overlay" id="oil-form-modal" onclick="if(event.target===this)closeOilForm()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="oil-form-title">新增精油</div>
+    <input type="hidden" id="oil-form-id">
+    <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px">
+      <div>
+        <div class="img-upload-box" id="oil-img-box" onclick="document.getElementById('oil-img-input').click()">
+          <div class="upload-icon">📷</div><div class="upload-label">上傳圖片</div>
+        </div>
+        <input type="file" id="oil-img-input" accept="image/*" style="display:none" onchange="uploadOilImg(this)">
+      </div>
+      <div style="flex:1">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">中文名稱</label><input class="form-input" id="oil-name" placeholder="天竺葵"></div>
+          <div class="form-group"><label class="form-label">英文名稱</label><input class="form-input" id="oil-en" placeholder="Geranium"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">類型</label><select class="form-select" id="oil-type"><option>單方</option><option>複方</option></select></div>
+          <div class="form-group"><label class="form-label">別名</label><input class="form-input" id="oil-alias" placeholder="斷捨離的能量"></div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">標籤（逗號分隔）</label><input class="form-input" id="oil-tags" placeholder="皮膚, 情緒, 生理"></div>
+    <div class="form-group"><label class="form-label">成分（複方填寫，逗號分隔）</label><input class="form-input" id="oil-ingredients" placeholder="薰衣草, 茶樹, 迷迭香"></div>
+    <div class="form-group"><label class="form-label">小故事／簡介</label><textarea class="form-textarea" id="oil-story"></textarea></div>
+    <div class="form-group"><label class="form-label">生理療效（每行一項）</label><textarea class="form-textarea" id="oil-physical"></textarea></div>
+    <div class="form-group"><label class="form-label">情緒療效（每行一項）</label><textarea class="form-textarea" id="oil-emotional"></textarea></div>
+    <div class="form-group"><label class="form-label">使用方法（每行一項）</label><textarea class="form-textarea" id="oil-usage"></textarea></div>
+    <div class="form-group"><label class="form-label">注意事項（每行一項）</label><textarea class="form-textarea" id="oil-caution"></textarea></div>
+    <div class="form-group"><label class="form-label">個人筆記</label><textarea class="form-textarea" id="oil-note"></textarea></div>
+    <div class="form-btn-row">
+      <button class="btn-secondary" onclick="closeOilForm()">取消</button>
+      <button class="btn-primary" id="oil-save-btn" onclick="saveOil()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Recipe Form -->
+<div class="modal-overlay" id="recipe-form-modal" onclick="if(event.target===this)closeRecipeForm()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="recipe-form-title">新增配方</div>
+    <input type="hidden" id="recipe-form-id">
+    <div class="form-group"><label class="form-label">配方名稱</label><input class="form-input" id="recipe-name"></div>
+    <div class="form-group"><label class="form-label">用途／場景</label><input class="form-input" id="recipe-purpose" placeholder="冬季暖意"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">使用方式</label><select class="form-select" id="recipe-method"><option>擴香</option><option>塗抹</option><option>香水</option><option>膏體</option><option>其他</option></select></div>
+      <div class="form-group"><label class="form-label">分類</label><select class="form-select" id="recipe-category"><option>擴香</option><option>情緒</option><option>香水</option><option>膏體</option><option>身體</option><option>其他</option></select></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">精油組合</label>
+      <div id="recipe-oils-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px"></div>
+      <button type="button" onclick="addOilRow()" style="width:100%;padding:9px;border:1.5px dashed var(--pink-soft);border-radius:10px;background:none;color:var(--gray);font-size:12px;cursor:pointer">＋ 加入精油</button>
+    </div>
+    <div class="form-group"><label class="form-label">備註</label><textarea class="form-textarea" id="recipe-note"></textarea></div>
+    <div class="form-group"><label class="form-label">注意事項</label><textarea class="form-textarea" id="recipe-caution" style="min-height:56px"></textarea></div>
+    <div class="form-btn-row">
+      <button class="btn-secondary" onclick="closeRecipeForm()">取消</button>
+      <button class="btn-primary" id="recipe-save-btn" onclick="saveRecipe()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">確定要刪除嗎？</div>
+    <div class="confirm-msg" id="confirm-msg">刪除後無法復原</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">取消</button>
+      <button class="confirm-delete" id="confirm-ok">刪除</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="bottom-nav">
+  <button class="bnav-btn active" onclick="switchPage('oils',this)"><span class="nav-icon">🌸</span>百科</button>
+  <button class="bnav-btn" onclick="switchPage('recipes',this)"><span class="nav-icon">📋</span>配方</button>
+  <button class="bnav-btn" onclick="switchPage('tips',this)"><span class="nav-icon">💡</span>技巧</button>
+</div>
+
+<!-- Firebase -->
 <script type="module">
-import { removeBackground } from 'https://esm.sh/@imgly/background-removal@1.4.5';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, getDocs, addDoc, setDoc, deleteDoc, doc, onSnapshot, orderBy, query }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAFGSQOvAp1thZkWBZ-nLHe-uR8llDQDI8",
+  authDomain: "home-hub-be41f.firebaseapp.com",
+  projectId: "home-hub-be41f",
+  storageBucket: "home-hub-be41f.firebasestorage.app",
+  messagingSenderId: "286497032414",
+  appId: "1:286497032414:web:16d3f0242a400d0de85a4f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ── Cloudinary ──
+const CLOUD='dxd5ijwof', PRESET='ml_default';
+async function uploadImg(file){
+  const fd=new FormData();fd.append('file',file);fd.append('upload_preset',PRESET);
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`,{method:'POST',body:fd});
+  const data=await res.json();
+  if(!data.secure_url)throw new Error('upload failed');
+  return data.secure_url;
+}
+
+window.uploadOilImg=async function(input){
+  const file=input.files[0];if(!file)return;
+  const box=document.getElementById('oil-img-box');
+  box.innerHTML=`<div class="spinner" style="width:20px;height:20px;border:2px solid var(--pink-pale);border-top-color:var(--pink);border-radius:50%;animation:spin .7s linear infinite"></div>`;
+  try{
+    const url=await uploadImg(file);
+    box.innerHTML=`<img src="${url}">`;box.dataset.url=url;showToast('圖片上傳成功 ✓');
+  }catch{
+    box.innerHTML=`<div class="upload-icon">📷</div><div class="upload-label">重試</div>`;
+    showToast('上傳失敗，請重試');
+  }
+};
 
 // ── State ──
-let targetW = 370, targetH = 320;
-let images = [];
-let selectedIdx = -1;
-let textLayers = [];
-let selectedTextIdx = -1;
-let isDragging = false, dragOX = 0, dragOY = 0;
-let currentMethod = 'ai';
-let borderStyle = 'outer';
+let oils=[], recipes=[];
+let oilTypeFilter='all', recipeTypeFilter='all';
 
-// ── DOM ──
-const canvas = document.getElementById('mainCanvas');
-const ctx = canvas.getContext('2d');
-
-// ── Model warm-up ──
-const modelNote = document.getElementById('modelNote');
-removeBackground(new Blob(), { model: 'small' }).catch(() => {}).finally(() => {
-  modelNote.textContent = '✅ AI 模型就緒！';
-  modelNote.className = 'model-note ready';
-});
-
-// ── Tabs ──
-document.getElementById('tabEdit').addEventListener('click', () => {
-  document.getElementById('tabEdit').classList.add('active');
-  document.getElementById('tabPreview').classList.remove('active');
-  document.getElementById('editPanel').classList.remove('hidden');
-  document.getElementById('previewPanel').classList.remove('visible');
-});
-document.getElementById('tabPreview').addEventListener('click', () => {
-  document.getElementById('tabPreview').classList.add('active');
-  document.getElementById('tabEdit').classList.remove('active');
-  document.getElementById('editPanel').classList.add('hidden');
-  document.getElementById('previewPanel').classList.add('visible');
-  updatePreview();
-});
-
-// ── Preview theme ──
-['themeLight', 'themeDark'].forEach(id => {
-  document.getElementById(id).addEventListener('click', () => {
-    document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    const theme = id === 'themeLight' ? 'light' : 'dark';
-    const chat = document.getElementById('lineChat');
-    chat.className = 'line-chat ' + theme;
-  });
-});
-
-function updatePreview() {
-  const entry = selectedIdx >= 0 ? images[selectedIdx] : null;
-  if (!entry) return;
-  // render canvas with text to dataURL
-  const out = document.createElement('canvas');
-  out.width = targetW; out.height = targetH;
-  const c = out.getContext('2d');
-  if (entry.processedCanvas) c.drawImage(entry.processedCanvas, 0, 0);
-  drawTextLayers(c);
-  const url = out.toDataURL('image/png');
-  document.getElementById('stickerPreviewImg').src = url;
-  document.getElementById('stickerDark').src = url;
-  document.getElementById('stickerLight').src = url;
-  document.getElementById('stickerMsg').style.display = 'flex';
+// ── Helpers ──
+function tc(t){if(['情緒','睡眠'].includes(t))return 'blue';if(['生理','呼吸','疼痛'].includes(t))return 'green';return '';}
+function sec(title,content){return `<div class="section"><div class="section-title">${title}</div>${content}</div>`;}
+function pill(o){return `<span class="recipe-oil-pill">${o.n}${o.d?`<span class="pill-drops"> ${o.d}</span>`:''}</span>`;}
+function setBtnLoading(id,loading){
+  const btn=document.getElementById(id);
+  btn.disabled=loading;btn.textContent=loading?'儲存中…':'儲存';
 }
 
-// ── Size presets ──
-document.querySelectorAll('[data-w]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-w]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    targetW = +btn.dataset.w; targetH = +btn.dataset.h;
-    canvas.width = targetW; canvas.height = targetH;
-    document.getElementById('canvasMeta').textContent = `${targetW} × ${targetH} px`;
-    document.getElementById('textX').value = Math.round(targetW / 2);
-    document.getElementById('textY').value = Math.round(targetH * 0.85);
-    renderCanvas();
-  });
-});
+window.showToast=function(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+};
 
-// ── Method ──
-document.querySelectorAll('[data-method]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-method]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentMethod = btn.dataset.method;
-    modelNote.style.display = currentMethod === 'ai' ? 'block' : 'none';
-  });
-});
-
-// ── Border controls ──
-document.getElementById('borderEnabled').addEventListener('change', e => {
-  const opts = document.getElementById('borderOptions');
-  opts.style.opacity = e.target.checked ? '1' : '0.4';
-  opts.style.pointerEvents = e.target.checked ? 'auto' : 'none';
-});
-document.getElementById('borderWidth').addEventListener('input', () => {
-  document.getElementById('borderWidthVal').textContent = document.getElementById('borderWidth').value + 'px';
-});
-document.querySelectorAll('[data-bstyle]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-bstyle]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    borderStyle = btn.dataset.bstyle;
-  });
-});
-
-// ── Upload ──
-const uploadZone = document.getElementById('uploadZone');
-const fileInput = document.getElementById('fileInput');
-uploadZone.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', e => handleFiles(e.target.files));
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
-uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
-
-function handleFiles(files) {
-  Array.from(files).forEach(file => {
-    if (!file.type.startsWith('image/')) return;
-    const img = new Image();
-    img.onload = () => {
-      images.push({ file, name: file.name, originalImg: img, originalBlob: file, processedCanvas: null, processing: false });
-      renderThumbs();
-      if (images.length === 1) { selectedIdx = 0; renderCanvas(); }
-    };
-    img.src = URL.createObjectURL(file);
-  });
+// ── Render ──
+function renderOils(list){
+  const c=document.getElementById('oils-list');
+  if(!list.length){c.innerHTML=`<div class="empty-state"><div class="empty-state-icon">🌿</div><div class="empty-state-text">找不到相關精油</div></div>`;return;}
+  c.innerHTML=list.map(o=>`<div class="oil-card" onclick="openOilDetail('${o.id}')">
+    <div class="oil-icon">${o.img?`<img src="${o.img}" alt="${o.name}">`:`<span>${o.icon||'🌿'}</span>`}</div>
+    <div style="flex:1;min-width:0">
+      <div class="oil-name">${o.name}</div>
+      <div class="oil-name-en">${o.en||''}</div>
+      <div class="oil-tags"><span class="tag">${o.type||'單方'}</span>${(o.tags||[]).map(t=>`<span class="tag ${tc(t)}">${t}</span>`).join('')}</div>
+    </div>
+    <div class="oil-arrow">›</div>
+  </div>`).join('');
 }
 
-// ── Thumbnails ──
-function renderThumbs() {
-  const grid = document.getElementById('thumbGrid');
-  grid.innerHTML = '';
-  document.getElementById('emptyHint').style.display = images.length ? 'none' : 'block';
-  images.forEach((entry, i) => {
-    const div = document.createElement('div');
-    div.className = 'thumb' + (i === selectedIdx ? ' selected' : '');
-    const img = document.createElement('img');
-    img.src = entry.processedCanvas ? entry.processedCanvas.toDataURL() : entry.originalImg.src;
-    div.appendChild(img);
-    const del = document.createElement('button');
-    del.className = 'del-btn'; del.textContent = '×';
-    del.onclick = e => { e.stopPropagation(); images.splice(i, 1); if (selectedIdx >= images.length) selectedIdx = images.length - 1; renderThumbs(); renderCanvas(); };
-    div.appendChild(del);
-    if (entry.processing) {
-      const b = document.createElement('div'); b.className = 'badge badge-proc'; b.textContent = 'AI...'; div.appendChild(b);
-    } else if (entry.processedCanvas) {
-      const b = document.createElement('div'); b.className = 'badge badge-done'; b.textContent = '✓'; div.appendChild(b);
-    }
-    div.addEventListener('click', () => { selectedIdx = i; renderThumbs(); renderCanvas(); document.getElementById('canvasMeta').textContent = `${targetW} × ${targetH} px · ${entry.name}`; });
-    grid.appendChild(div);
-  });
+function renderRecipes(list){
+  const c=document.getElementById('recipes-list');
+  if(!list.length){c.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">找不到相關配方</div></div>`;return;}
+  c.innerHTML=list.map(r=>`<div class="recipe-card" onclick="openRecipeDetail('${r.id}')">
+    <div class="recipe-header"><div class="recipe-name">${r.name}</div><span class="recipe-method">${r.method||''}</span></div>
+    <div class="recipe-purpose">✦ ${r.purpose||''}</div>
+    <div class="recipe-oils">${(r.oils||[]).map(pill).join('')}</div>
+    ${r.note?`<div class="recipe-note">${r.note}</div>`:''}
+    ${r.caution?`<div class="recipe-caution">⚠️ ${r.caution}</div>`:''}
+  </div>`).join('');
 }
 
-// ── Apply border to canvas ──
-function applyBorder(srcCanvas) {
-  if (!document.getElementById('borderEnabled').checked) return srcCanvas;
-  const bw = +document.getElementById('borderWidth').value;
-  const bc = document.getElementById('borderColor').value;
-  const out = document.createElement('canvas');
-  out.width = srcCanvas.width; out.height = srcCanvas.height;
-  const c = out.getContext('2d');
+// ── Filters ──
+function getFilteredOils(q=''){
+  let l=[...oils];
+  if(oilTypeFilter!=='all')l=l.filter(o=>o.type===oilTypeFilter||(o.tags||[]).includes(oilTypeFilter));
+  if(q)l=l.filter(o=>o.name.includes(q)||(o.en||'').toLowerCase().includes(q.toLowerCase())||(o.tags||[]).some(t=>t.includes(q)));
+  return l;
+}
+function getFilteredRecipes(q=''){
+  let l=[...recipes];
+  if(recipeTypeFilter!=='all')l=l.filter(r=>r.method===recipeTypeFilter||r.category===recipeTypeFilter);
+  if(q)l=l.filter(r=>r.name.includes(q)||(r.purpose||'').includes(q)||(r.oils||[]).some(o=>o.n.includes(q)));
+  return l;
+}
+window.filterOils=q=>renderOils(getFilteredOils(q));
+window.filterRecipes=q=>renderRecipes(getFilteredRecipes(q));
+window.filterByType=(t,el)=>{oilTypeFilter=t;document.querySelectorAll('#page-oils .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');filterOils(document.querySelector('#page-oils .search-input').value);};
+window.filterRecipeType=(t,el)=>{recipeTypeFilter=t;document.querySelectorAll('#page-recipes .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');filterRecipes(document.querySelector('#page-recipes .search-input').value);};
 
-  if (borderStyle === 'outer') {
-    // Dilate alpha and fill with border color below image
-    const tmp = document.createElement('canvas');
-    tmp.width = srcCanvas.width; tmp.height = srcCanvas.height;
-    const tc = tmp.getContext('2d');
-    // Draw expanded outline by drawing image offset in all directions
-    tc.fillStyle = bc;
-    for (let angle = 0; angle < 360; angle += 10) {
-      const rad = angle * Math.PI / 180;
-      tc.drawImage(srcCanvas, Math.cos(rad) * bw, Math.sin(rad) * bw);
-    }
-    // Use destination-over to place border behind
-    tc.globalCompositeOperation = 'destination-out';
-    // carve the original shape out of the expanded shape
-    tc.drawImage(srcCanvas, 0, 0);
-    tc.globalCompositeOperation = 'source-over';
+// ── Detail ──
+window.openOilDetail=function(id){
+  const o=oils.find(x=>x.id===id);if(!o)return;
+  document.getElementById('detail-name').textContent=o.name;
+  document.getElementById('detail-en').textContent=o.en||'';
+  document.getElementById('oil-edit-btn').onclick=()=>{closeDetail('oil-detail');openOilForm(id);};
+  document.getElementById('oil-del-btn').onclick=()=>confirmDelete('oil',id,o.name);
+  let h=`<div class="detail-hero">`;
+  h+=o.img?`<img class="detail-hero-img" src="${o.img}" alt="${o.name}">`:`<div class="detail-hero-icon">${o.icon||'🌿'}</div>`;
+  h+=`<div class="detail-hero-name">${o.name}</div>
+  <div class="detail-hero-en">${o.en||''}</div>
+  <div class="detail-hero-badges"><span class="tag">${o.type||'單方'}</span>${(o.tags||[]).map(t=>`<span class="tag ${tc(t)}">${t}</span>`).join('')}</div></div>`;
+  if(o.alias)h+=sec('🏷 別名',`<div class="section-content">${o.alias}</div>`);
+  if(o.story)h+=sec('🌿 小故事',`<div class="section-content">${o.story}</div>`);
+  if(o.ingredients?.length)h+=sec('🌱 成分',`<div class="section-content">${o.ingredients.join('、')}</div>`);
+  if(o.physical?.length)h+=sec('💧 生理療效',`<ul class="bullet-list">${o.physical.map(i=>`<li>${i}</li>`).join('')}</ul>`);
+  if(o.emotional?.length)h+=sec('💗 情緒療效',`<ul class="bullet-list">${o.emotional.map(i=>`<li>${i}</li>`).join('')}</ul>`);
+  if(o.usage?.length)h+=sec('☀️ 使用方法',`<ul class="bullet-list">${o.usage.map(i=>`<li>${i}</li>`).join('')}</ul>`);
+  if(o.caution?.length)h+=sec('⚠️ 注意事項',`<div class="warning-box">${o.caution.join('<br>')}</div>`);
+  if(o.note)h+=sec('📌 個人筆記',`<div class="personal-note">${o.note}</div>`);
+  document.getElementById('detail-body').innerHTML=h;
+  document.getElementById('oil-detail').classList.add('open');
+  document.getElementById('oil-detail').scrollTop=0;
+};
 
-    // Draw border colored shape
-    const borderCanvas = document.createElement('canvas');
-    borderCanvas.width = srcCanvas.width; borderCanvas.height = srcCanvas.height;
-    const bc2 = borderCanvas.getContext('2d');
-    for (let angle = 0; angle < 360; angle += 6) {
-      const rad = angle * Math.PI / 180;
-      bc2.drawImage(srcCanvas, Math.cos(rad) * bw, Math.sin(rad) * bw);
-    }
-    bc2.globalCompositeOperation = 'source-in';
-    bc2.fillStyle = bc;
-    bc2.fillRect(0, 0, borderCanvas.width, borderCanvas.height);
-    bc2.globalCompositeOperation = 'source-over';
+window.openRecipeDetail=function(id){
+  const r=recipes.find(x=>x.id===id);if(!r)return;
+  document.getElementById('r-detail-name').textContent=r.name;
+  document.getElementById('recipe-edit-btn').onclick=()=>{closeDetail('recipe-detail');openRecipeForm(id);};
+  document.getElementById('recipe-del-btn').onclick=()=>confirmDelete('recipe',id,r.name);
+  let h=`<div class="detail-hero"><div class="detail-hero-icon">📋</div>
+  <div class="detail-hero-name">${r.name}</div><div class="detail-hero-en">${r.purpose||''}</div>
+  <div class="detail-hero-badges"><span class="tag">${r.method||''}</span></div></div>`;
+  h+=sec('🌿 精油組合',`<div class="recipe-oils" style="flex-wrap:wrap;margin-top:4px">${(r.oils||[]).map(pill).join('')}</div>`);
+  if(r.note)h+=sec('📝 備註',`<div class="section-content">${r.note}</div>`);
+  if(r.caution)h+=sec('⚠️ 注意事項',`<div class="warning-box">${r.caution}</div>`);
+  document.getElementById('r-detail-body').innerHTML=h;
+  document.getElementById('recipe-detail').classList.add('open');
+  document.getElementById('recipe-detail').scrollTop=0;
+};
 
-    c.drawImage(borderCanvas, 0, 0);
-    c.drawImage(srcCanvas, 0, 0);
+window.closeDetail=id=>document.getElementById(id).classList.remove('open');
 
-  } else if (borderStyle === 'shadow') {
-    c.shadowColor = bc;
-    c.shadowBlur = bw * 2;
-    c.shadowOffsetX = bw * 0.5;
-    c.shadowOffsetY = bw * 0.5;
-    c.drawImage(srcCanvas, 0, 0);
-    c.shadowColor = 'transparent';
-
-  } else if (borderStyle === 'glow') {
-    for (let i = bw; i > 0; i -= 2) {
-      c.shadowColor = bc;
-      c.shadowBlur = i * 3;
-      c.drawImage(srcCanvas, 0, 0);
-    }
-    c.shadowColor = 'transparent';
-    c.drawImage(srcCanvas, 0, 0);
+// ── Oil Form ──
+window.openOilForm=function(editId=null){
+  const box=document.getElementById('oil-img-box');
+  if(editId){
+    const o=oils.find(x=>x.id===editId);
+    document.getElementById('oil-form-title').textContent='編輯精油';
+    document.getElementById('oil-form-id').value=editId;
+    document.getElementById('oil-name').value=o.name||'';
+    document.getElementById('oil-en').value=o.en||'';
+    document.getElementById('oil-type').value=o.type||'單方';
+    document.getElementById('oil-alias').value=o.alias||'';
+    document.getElementById('oil-tags').value=(o.tags||[]).join(', ');
+    document.getElementById('oil-ingredients').value=(o.ingredients||[]).join(', ');
+    document.getElementById('oil-story').value=o.story||'';
+    document.getElementById('oil-physical').value=(o.physical||[]).join('\n');
+    document.getElementById('oil-emotional').value=(o.emotional||[]).join('\n');
+    document.getElementById('oil-usage').value=(o.usage||[]).join('\n');
+    document.getElementById('oil-caution').value=(o.caution||[]).join('\n');
+    document.getElementById('oil-note').value=o.note||'';
+    if(o.img){box.innerHTML=`<img src="${o.img}">`;box.dataset.url=o.img;}
+    else{box.innerHTML=`<div class="upload-icon">📷</div><div class="upload-label">上傳圖片</div>`;box.dataset.url='';}
+  }else{
+    document.getElementById('oil-form-title').textContent='新增精油';
+    document.getElementById('oil-form-id').value='';
+    ['oil-name','oil-en','oil-alias','oil-tags','oil-ingredients','oil-story','oil-physical','oil-emotional','oil-usage','oil-caution','oil-note'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('oil-type').value='單方';
+    box.innerHTML=`<div class="upload-icon">📷</div><div class="upload-label">上傳圖片</div>`;box.dataset.url='';
   }
+  document.getElementById('oil-form-modal').classList.add('open');
+};
+window.closeOilForm=()=>document.getElementById('oil-form-modal').classList.remove('open');
 
-  return out;
-}
+window.saveOil=async function(){
+  const name=document.getElementById('oil-name').value.trim();
+  if(!name){showToast('請輸入精油名稱');return;}
+  setBtnLoading('oil-save-btn',true);
+  const editId=document.getElementById('oil-form-id').value;
+  const imgUrl=document.getElementById('oil-img-box').dataset.url||'';
+  const tags=document.getElementById('oil-tags').value.split(/[,，]/).map(s=>s.trim()).filter(Boolean);
+  const ing=document.getElementById('oil-ingredients').value.split(/[,，]/).map(s=>s.trim()).filter(Boolean);
+  const data={
+    name,en:document.getElementById('oil-en').value.trim(),
+    type:document.getElementById('oil-type').value,
+    alias:document.getElementById('oil-alias').value.trim(),
+    icon:'🌿',img:imgUrl,tags,
+    story:document.getElementById('oil-story').value.trim(),
+    ingredients:ing,
+    physical:document.getElementById('oil-physical').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    emotional:document.getElementById('oil-emotional').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    usage:document.getElementById('oil-usage').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    caution:document.getElementById('oil-caution').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    note:document.getElementById('oil-note').value.trim(),
+    updatedAt:Date.now(),
+  };
+  try{
+    if(editId){await setDoc(doc(db,'aroma_oils',editId),data);showToast('已更新精油資料 ✓');}
+    else{await addDoc(collection(db,'aroma_oils'),{...data,createdAt:Date.now()});showToast('精油已新增 ✓');}
+    closeOilForm();
+  }catch(e){showToast('儲存失敗：'+e.message);}
+  setBtnLoading('oil-save-btn',false);
+};
 
-// ── Process image ──
-async function processEntry(entry) {
-  const pad = +document.getElementById('padding').value;
-  let src;
+// ── Recipe Form ──
+window.addOilRow=function(n='',d=''){
+  const wrap=document.getElementById('recipe-oils-list');
+  const row=document.createElement('div');
+  row.style.cssText='display:flex;gap:6px;align-items:center';
+  row.innerHTML=`<input class="form-input oil-row-name" placeholder="精油名稱" value="${n}" style="flex:2">
+    <input class="form-input oil-row-drops" placeholder="滴數（選填）" value="${d}" style="flex:1">
+    <button onclick="this.parentElement.remove()" style="width:30px;height:30px;border-radius:50%;border:none;background:var(--red-pale);color:var(--red);cursor:pointer;flex-shrink:0;font-size:14px">×</button>`;
+  wrap.appendChild(row);
+};
 
-  if (currentMethod === 'ai') {
-    try {
-      const resultBlob = await removeBackground(entry.originalBlob, { model: 'small', output: { format: 'image/png', quality: 1 } });
-      const url = URL.createObjectURL(resultBlob);
-      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
-      src = document.createElement('canvas');
-      src.width = img.naturalWidth; src.height = img.naturalHeight;
-      src.getContext('2d').drawImage(img, 0, 0);
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      src = imgToCanvas(entry.originalImg);
-    }
-  } else {
-    src = removeBgSimple(entry.originalImg, currentMethod);
+window.openRecipeForm=function(editId=null){
+  document.getElementById('recipe-oils-list').innerHTML='';
+  if(editId){
+    const r=recipes.find(x=>x.id===editId);
+    document.getElementById('recipe-form-title').textContent='編輯配方';
+    document.getElementById('recipe-form-id').value=editId;
+    document.getElementById('recipe-name').value=r.name||'';
+    document.getElementById('recipe-purpose').value=r.purpose||'';
+    document.getElementById('recipe-method').value=r.method||'擴香';
+    document.getElementById('recipe-category').value=r.category||'擴香';
+    document.getElementById('recipe-note').value=r.note||'';
+    document.getElementById('recipe-caution').value=r.caution||'';
+    (r.oils||[]).forEach(o=>addOilRow(o.n,o.d||''));
+  }else{
+    document.getElementById('recipe-form-title').textContent='新增配方';
+    document.getElementById('recipe-form-id').value='';
+    ['recipe-name','recipe-purpose','recipe-note','recipe-caution'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('recipe-method').value='擴香';
+    document.getElementById('recipe-category').value='擴香';
+    addOilRow();
   }
+  document.getElementById('recipe-form-modal').classList.add('open');
+};
+window.closeRecipeForm=()=>document.getElementById('recipe-form-modal').classList.remove('open');
 
-  // Apply border to subject before compositing
-  src = applyBorder(src);
+window.saveRecipe=async function(){
+  const name=document.getElementById('recipe-name').value.trim();
+  if(!name){showToast('請輸入配方名稱');return;}
+  setBtnLoading('recipe-save-btn',true);
+  const editId=document.getElementById('recipe-form-id').value;
+  const oilsList=[...document.querySelectorAll('#recipe-oils-list > div')].map(row=>({
+    n:row.querySelector('.oil-row-name').value.trim(),
+    d:row.querySelector('.oil-row-drops').value.trim()||null
+  })).filter(o=>o.n).map(o=>o.d?o:{n:o.n});
+  const data={
+    name,purpose:document.getElementById('recipe-purpose').value.trim(),
+    method:document.getElementById('recipe-method').value,
+    category:document.getElementById('recipe-category').value,
+    oils:oilsList,
+    note:document.getElementById('recipe-note').value.trim(),
+    caution:document.getElementById('recipe-caution').value.trim(),
+    updatedAt:Date.now(),
+  };
+  try{
+    if(editId){await setDoc(doc(db,'aroma_recipes',editId),data);showToast('已更新配方 ✓');}
+    else{await addDoc(collection(db,'aroma_recipes'),{...data,createdAt:Date.now()});showToast('配方已新增 ✓');}
+    closeRecipeForm();
+  }catch(e){showToast('儲存失敗：'+e.message);}
+  setBtnLoading('recipe-save-btn',false);
+};
 
-  const out = document.createElement('canvas');
-  out.width = targetW; out.height = targetH;
-  const c = out.getContext('2d');
-  const aw = targetW - pad * 2, ah = targetH - pad * 2;
-  const scale = Math.min(aw / src.width, ah / src.height);
-  const dw = src.width * scale, dh = src.height * scale;
-  c.drawImage(src, (targetW - dw) / 2, (targetH - dh) / 2, dw, dh);
-  return out;
+// ── Delete ──
+window.confirmDelete=function(type,id,name){
+  closeDetail('oil-detail');closeDetail('recipe-detail');
+  document.getElementById('confirm-msg').textContent=`「${name}」刪除後無法復原`;
+  document.getElementById('confirm-ok').onclick=()=>doDelete(type,id);
+  document.getElementById('confirm-overlay').classList.add('open');
+};
+async function doDelete(type,id){
+  const col=type==='oil'?'aroma_oils':'aroma_recipes';
+  try{
+    await deleteDoc(doc(db,col,id));
+    showToast(type==='oil'?'精油已刪除':'配方已刪除');
+  }catch(e){showToast('刪除失敗：'+e.message);}
+  closeConfirm();
+}
+window.closeConfirm=()=>document.getElementById('confirm-overlay').classList.remove('open');
+
+// ── Page Switch ──
+window.switchPage=function(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+};
+window.openAddChoice=()=>document.getElementById('add-choice-modal').classList.add('open');
+
+// ── Firebase realtime listeners ──
+function listenOils(){
+  const q=query(collection(db,'aroma_oils'),orderBy('createdAt','asc'));
+  onSnapshot(q,snap=>{
+    oils=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderOils(getFilteredOils(document.querySelector('#page-oils .search-input').value));
+  },err=>console.error('oils:',err));
+}
+function listenRecipes(){
+  const q=query(collection(db,'aroma_recipes'),orderBy('createdAt','asc'));
+  onSnapshot(q,snap=>{
+    recipes=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderRecipes(getFilteredRecipes(document.querySelector('#page-recipes .search-input').value));
+  },err=>console.error('recipes:',err));
 }
 
-function imgToCanvas(img) {
-  const c = document.createElement('canvas');
-  c.width = img.naturalWidth; c.height = img.naturalHeight;
-  c.getContext('2d').drawImage(img, 0, 0);
-  return c;
+// ── Seed initial data if empty ──
+async function seedIfEmpty(){
+  const snap=await getDocs(collection(db,'aroma_oils'));
+  if(!snap.empty)return; // 已有資料就不 seed
+  const now=Date.now();
+  const seedOils=[
+    {name:'天竺葵',en:'Geranium',type:'單方',icon:'🌺',img:'',alias:'',tags:['皮膚','情緒','生理'],story:'天竺葵有翻人的玫瑰之稱，適合各種皮膚，特別是油性肌膚和痘痘型肌膚。',ingredients:[],physical:['能深層潔膚，平衡皮脂分泌，促進皮膚細胞新生並修復疤痕','改善經前症候群、更年期問題（沮喪、陰道乾澀、經血過多）','強化循環系統，具利尿特性，可幫助肝、腎排毒，改善水份滯留症狀','對濕疹、灼傷、帶狀皰疹、皰疹、癬及凍瘡有益','有很好殺菌能力及收斂和止血效果，適合治療創傷、幫助傷口復原'],emotional:['放開因害怕失去而產生的掌控慾，恢復內心的柔軟與安定','助人不在糾結於現況，提振精神且平衡情緒','幫助克服在大眾面前講話的恐懼'],usage:[],caution:['能調節荷爾蒙，懷孕期間要謹慎使用'],note:'',createdAt:now},
+    {name:'淨化',en:'Purification',type:'複方',icon:'✨',img:'',alias:'斷捨離的能量',tags:['情緒','空間','生理'],story:'結合具有去味功能的精油，能夠為環境中帶來清新、乾淨的香氣。別名：斷捨離的能量。',ingredients:['醒目薰衣草','檸檬香茅','迷迭香','香桃木','茶樹'],physical:['蚊蟲叮咬、驅趕蚊蟲','醒腦提神','乾咳、喉嚨痛、扁桃腺炎、中耳炎','增強免疫系統','傷口或昆蟲咬傷部位消毒'],emotional:['在房間中進行擴散淨化，清除負面情緒和振動','在充滿衝突的空間中噴一些'],usage:['局部範圍可以直接使用純精油','平日保養請加V6植物油稀釋'],caution:['EarthKosher猶太潔食認證'],note:'別名「斷捨離的能量」。下意圖：我要淨化我所有的能量與情緒。',createdAt:now+1},
+    {name:'R.C.（樂吸）',en:'R.C.',type:'複方',icon:'🌬️',img:'',alias:'',tags:['呼吸','生理'],story:'有助打通呼吸道，擴香時散出令人愉快的香氣，有助保持積極性。',ingredients:['Copaiba','尤加利（三種）','香桃木','黑雲杉','薄荷','薰衣草','松樹','馬鬱蘭','絲柏'],physical:['舒緩感冒症狀、咳嗽','鼻塞、過敏','支氣管炎、鼻竇炎','有助維持健康的鼻竇和肺功能','運動前使用能提升意識','減輕打鼻鼾情況'],emotional:['擴香時散出令人愉快的香氣，有助保持積極性'],usage:['用V6基底油稀釋精油','擴香、加濕、直接吸入或塗抹在胸部、頭部、喉嚨處'],caution:[],note:'',createdAt:now+2},
+    {name:'Joy（喜悅）',en:'Joy',type:'複方',icon:'💗',img:'',alias:'',tags:['情緒','皮膚'],story:'Joy 是一款奢華的具有異國情調的提神複方油，可以令人心情愉快。',ingredients:['天竺葵','茉莉','羅馬甘菊','花梨木','玫瑰草','玫瑰','檸檬','佛手柑','柑橘','依蘭'],physical:[],emotional:['日常香水','自信與魅力','浪漫時刻'],usage:[],caution:[],note:'',createdAt:now+3},
+    {name:'薰衣草',en:'Lavender',type:'單方',icon:'💜',img:'',alias:'',tags:['皮膚','情緒','睡眠'],story:'最萬用的精油之一，助眠、舒緩、皮膚護理、情緒平衡。',ingredients:[],physical:['助眠','皮膚護理','舒緩各種不適'],emotional:['情緒平衡','放鬆神經'],usage:[],caution:[],note:'',createdAt:now+4},
+    {name:'薄荷',en:'Peppermint',type:'單方',icon:'🌿',img:'',alias:'',tags:['生理','呼吸'],story:'清涼提神，消化、頭痛舒緩、提神。',ingredients:[],physical:['提神','清涼','幫助消化','舒緩頭痛'],emotional:[],usage:[],caution:['嬰幼兒避免直接使用'],note:'',createdAt:now+5},
+    {name:'冬青',en:'Wintergreen',type:'單方',icon:'🍃',img:'',alias:'',tags:['生理','疼痛'],story:'具有刺激、消炎、鎮痛等功效，可促進局部血液循環。',ingredients:[],physical:['刺激、消炎、鎮痛','促進局部血液循環','用於急性風濕性關節炎、腰痛、肌肉痛、神經痛','有止癢的功效','殺菌、利尿'],emotional:[],usage:['消除橘皮組織按摩：冬青2＋杜松2＋迷迭香2＋植物油10ML','去疤胞：冬青1＋薰衣草1＋檸檬1＋植物油6滴'],caution:['成人濃度稀釋2-3%','嬰幼兒、孕婦濃度0.5-1%','孕婦及癲癇患者禁用'],note:'',createdAt:now+6},
+    {name:'玫瑰草',en:'Palmarosa',type:'單方',icon:'🌹',img:'',alias:'',tags:['皮膚','情緒'],story:'玫瑰草又稱為印度天竺葵或薑草，擴香使用時可增添平靜和諧的氣息，使情緒平穩。',ingredients:[],physical:[],emotional:['增添平靜和諧的氣息','使情緒平穩'],usage:[],caution:[],note:'',createdAt:now+7},
+    {name:'苦配巴',en:'Copaiba',type:'單方',icon:'🤎',img:'',alias:'',tags:['生理','疼痛'],story:'來自南美洲的樹脂精油，具有強大的消炎和鎮痛效果。',ingredients:[],physical:['消炎','鎮痛','支持免疫系統'],emotional:[],usage:[],caution:[],note:'',createdAt:now+8},
+  ];
+  for(const o of seedOils)await addDoc(collection(db,'aroma_oils'),o);
+
+  const snapR=await getDocs(collection(db,'aroma_recipes'));
+  if(!snapR.empty)return;
+  const seedRecipes=[
+    {name:'毛衣暖暖',purpose:'冬季暖意',method:'擴香',category:'擴香',oils:[{n:'甜橙',d:'4滴'},{n:'乳香',d:'4滴'},{n:'生薑',d:'1滴'}],note:'冬天在家擴香，帶來溫暖舒適感',caution:'',createdAt:now},
+    {name:'夏日假期',purpose:'清新夏日',method:'擴香',category:'擴香',oils:[{n:'薰衣草',d:'4滴'},{n:'檸檬',d:'3滴'},{n:'檸檬香茅',d:'1滴'}],note:'',caution:'',createdAt:now+1},
+    {name:'PSK 呼吸暢順',purpose:'暢通呼吸道',method:'擴香',category:'擴香',oils:[{n:'薄荷',d:'3滴'},{n:'苦配巴',d:'2滴'},{n:'樂C複方',d:'3滴'}],note:'100ml水＋精油，按空間大小調整',caution:'',createdAt:now+2},
+    {name:'PSK 日常保健',purpose:'日常免疫保健',method:'擴香',category:'擴香',oils:[{n:'盜賊複方',d:'2滴'},{n:'樂C複方',d:'2滴'},{n:'薰衣草',d:'2滴'}],note:'100ml水＋精油',caution:'',createdAt:now+3},
+    {name:'PSK 轉季三寶',purpose:'轉季保護',method:'擴香',category:'擴香',oils:[{n:'薰衣草',d:'3滴'},{n:'檸檬',d:'2滴'},{n:'薄荷',d:'2滴'}],note:'100ml水＋精油',caution:'',createdAt:now+4},
+    {name:'PSK 鞏固抵抗力',purpose:'加強免疫力',method:'擴香',category:'擴香',oils:[{n:'盜賊複方',d:'3滴'},{n:'檸檬',d:'2滴'},{n:'乳香',d:'2滴'}],note:'100ml水＋精油',caution:'',createdAt:now+5},
+    {name:'PSK 通鼻潤喉',purpose:'通鼻、舒緩喉嚨',method:'擴香',category:'擴香',oils:[{n:'樂C複方',d:'4滴'},{n:'盜賊複方',d:'4滴'}],note:'100ml水＋精油',caution:'',createdAt:now+6},
+    {name:'PSK 輕鬆入睡',purpose:'助眠放鬆',method:'擴香',category:'擴香',oils:[{n:'樂自在複方',d:'3滴'},{n:'薰衣草',d:'2滴'},{n:'苦配巴',d:'2滴'}],note:'100ml水＋精油',caution:'',createdAt:now+7},
+    {name:'露營除臭滅菌防蚊',purpose:'淨化空間、防蚊',method:'擴香',category:'擴香',oils:[{n:'淨化'},{n:'盜賊'},{n:'檸檬'}],note:'帳篷內擴香，消除異味兼滅菌，蚊蟲不敢入侵',caution:'',createdAt:now+8},
+    {name:'拔除負創能量',purpose:'淨化空間能量',method:'擴香',category:'擴香',oils:[{n:'淨化',d:'1-2滴'},{n:'佛手柑',d:'1-2滴'},{n:'檸檬香茅',d:'1-2滴'},{n:'香蜂草',d:'1-2滴'},{n:'芫荽',d:'1-2滴'},{n:'聖木',d:'1-2滴'}],note:'依序加入擴香機，保持空間通風。意念：「讓這個鏡攝能量，有來有去回到源頭。」',caution:'',createdAt:now+9},
+    {name:'捕夢網 Dream Catcher',purpose:'抓取靈感、記錄夢境',method:'擴香',category:'擴香',oils:[{n:'柑橘'},{n:'薰衣草'},{n:'艾菊'},{n:'檀香'},{n:'神聖乳香'},{n:'佛手柑'},{n:'檸檬草'},{n:'依蘭依蘭'},{n:'黑胡椒'},{n:'杜松'}],note:'適合創作者，早晨搭配大吉嶺紅茶／玫瑰茶使用',caution:'',createdAt:now+10},
+    {name:'考試季：醒腦增強記憶',purpose:'提升專注力、記憶力',method:'塗抹',category:'情緒',oils:[{n:'薄荷'},{n:'迷迭香'},{n:'檸檬'},{n:'乳香'}],note:'塗抹太陽穴、後頸、頸椎、頸側。15%濃度，10歲以下減半。',caution:'',createdAt:now+11},
+    {name:'考試季：助眠減壓',purpose:'助眠、減壓',method:'塗抹',category:'情緒',oils:[{n:'薰衣草'},{n:'北非雪松'},{n:'樂自在'},{n:'岩蘭草'}],note:'塗抹手腕、腳底、頸椎。15%濃度，10歲以下減半。',caution:'',createdAt:now+12},
+    {name:'考試季：勇氣可加',purpose:'增加勇氣、考場必備',method:'塗抹',category:'情緒',oils:[{n:'勇複方'},{n:'甜橙'},{n:'北極光黑雲杉'},{n:'乳香'}],note:'塗抹手腕、耳後、心口',caution:'柑橘類精油有光敏性，塗抹後12小時內避免陽光直射',createdAt:now+13},
+    {name:'Good Night Hugs',purpose:'助眠淡香水',method:'香水',category:'香水',oils:[{n:'樂自在',d:'3滴'},{n:'佛手柑',d:'4滴'},{n:'岩蘭草',d:'4滴'}],note:'5ml淡香水，濃度10%。加入香水酒精5ml即完成。',caution:'',createdAt:now+14},
+    {name:'萬用膏',purpose:'萬用舒緩',method:'膏體',category:'膏體',oils:[{n:'薰衣草'},{n:'薄荷'},{n:'檸檬'},{n:'淨化'},{n:'藍艾菊（可省略）'}],note:'調入蜂蠟或乳木果油製成膏體',caution:'',createdAt:now+15},
+    {name:'自在好壯壯呼吸膏（配方一）',purpose:'呼吸道保健膏',method:'膏體',category:'膏體',oils:[{n:'樂C'},{n:'杜松'},{n:'馬鬱蘭'},{n:'天竺葵'},{n:'苦橙葉（可加）'}],note:'依照目前有哪些精油來選擇配方',caution:'',createdAt:now+16},
+    {name:'自在好壯壯呼吸膏（配方二）',purpose:'呼吸道保健膏',method:'膏體',category:'膏體',oils:[{n:'羅文沙葉'},{n:'尤加利'},{n:'杜松'},{n:'馬鬱蘭'},{n:'玫瑰（可加）'},{n:'苦橙葉（可加）'}],note:'依照目前有哪些精油來選擇配方',caution:'',createdAt:now+17},
+    {name:'推薦東西秘方',purpose:'推薦助力',method:'塗抹',category:'情緒',oils:[{n:'相信'},{n:'豐碩'}],note:'使用時想著對方，有助推薦氛圍',caution:'',createdAt:now+18},
+  ];
+  for(const r of seedRecipes)await addDoc(collection(db,'aroma_recipes'),r);
 }
 
-function removeBgSimple(img, method) {
-  const c = imgToCanvas(img);
-  if (method === 'none') return c;
-  const cx = c.getContext('2d');
-  const id = cx.getImageData(0, 0, c.width, c.height);
-  const d = id.data;
-  if (method === 'white') {
-    for (let i = 0; i < d.length; i += 4) {
-      if (d[i] > 220 && d[i+1] > 220 && d[i+2] > 220) d[i+3] = 0;
-    }
-  } else {
-    const corners = [[0,0],[c.width-1,0],[0,c.height-1],[c.width-1,c.height-1]];
-    let r=0,g=0,b=0;
-    corners.forEach(([x,y]) => { const n=(y*c.width+x)*4; r+=d[n]; g+=d[n+1]; b+=d[n+2]; });
-    r=Math.round(r/4); g=Math.round(g/4); b=Math.round(b/4);
-    for (let i = 0; i < d.length; i += 4) {
-      if (Math.abs(d[i]-r)<45 && Math.abs(d[i+1]-g)<45 && Math.abs(d[i+2]-b)<45) d[i+3]=0;
-    }
+// ── Init ──
+async function init(){
+  try{
+    await seedIfEmpty();
+    listenOils();
+    listenRecipes();
+  }catch(e){
+    console.error('init error:',e);
+    showToast('連線失敗，請重新整理');
+  }finally{
+    document.getElementById('loading-screen').classList.add('hidden');
   }
-  cx.putImageData(id, 0, 0);
-  return c;
 }
 
-// ── Process all ──
-document.getElementById('processAllBtn').addEventListener('click', async () => {
-  if (!images.length) return;
-  const btn = document.getElementById('processAllBtn');
-  btn.disabled = true;
-  const bar = document.getElementById('statusBar');
-  bar.classList.add('visible');
-  for (let i = 0; i < images.length; i++) {
-    images[i].processing = true;
-    renderThumbs();
-    document.getElementById('statusText').textContent = `${i+1}/${images.length}：${images[i].name}`;
-    images[i].processedCanvas = await processEntry(images[i]);
-    images[i].processing = false;
-    const pct = Math.round((i+1)/images.length*100);
-    document.getElementById('progFill').style.width = pct + '%';
-    document.getElementById('progNum').textContent = pct + '%';
-    renderThumbs();
-    if (i === selectedIdx) renderCanvas();
-  }
-  document.getElementById('statusText').textContent = '✅ 全部完成！';
-  btn.disabled = false;
-  setTimeout(() => { bar.classList.remove('visible'); document.getElementById('progFill').style.width = '0%'; }, 3000);
-});
-
-// ── Process one ──
-document.getElementById('processOneBtn').addEventListener('click', async () => {
-  if (selectedIdx < 0) return;
-  const entry = images[selectedIdx];
-  entry.processing = true;
-  renderThumbs();
-  entry.processedCanvas = await processEntry(entry);
-  entry.processing = false;
-  renderThumbs();
-  renderCanvas();
-});
-
-// ── ZIP download ──
-document.getElementById('downloadAllBtn').addEventListener('click', async () => {
-  if (!images.length) return;
-  const zip = new JSZip();
-  const folder = zip.folder('line_stickers');
-  for (const entry of images) {
-    const src = entry.processedCanvas || await processEntry(entry);
-    folder.file(entry.name.replace(/\.[^.]+$/, '') + '_sticker.png', src.toDataURL('image/png').split(',')[1], { base64: true });
-  }
-  const blob = await zip.generateAsync({ type: 'blob' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'line_stickers.zip';
-  a.click();
-});
-
-// ── Export one ──
-document.getElementById('exportOneBtn').addEventListener('click', () => {
-  const out = document.createElement('canvas');
-  out.width = targetW; out.height = targetH;
-  const c = out.getContext('2d');
-  if (selectedIdx >= 0 && images[selectedIdx].processedCanvas) c.drawImage(images[selectedIdx].processedCanvas, 0, 0);
-  drawTextLayers(c);
-  const a = document.createElement('a');
-  a.href = out.toDataURL('image/png');
-  a.download = 'sticker_export.png';
-  a.click();
-});
-
-// ── Canvas render ──
-function renderCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (selectedIdx >= 0 && images[selectedIdx]) {
-    const entry = images[selectedIdx];
-    const src = entry.processedCanvas;
-    if (src) {
-      ctx.drawImage(src, 0, 0);
-    } else {
-      const img = entry.originalImg;
-      const s = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
-      ctx.drawImage(img, (canvas.width - img.naturalWidth*s)/2, (canvas.height - img.naturalHeight*s)/2, img.naturalWidth*s, img.naturalHeight*s);
-    }
-  }
-  drawTextLayers(ctx);
-}
-
-function drawTextLayers(c) {
-  textLayers.forEach((layer, i) => {
-    c.save();
-    c.font = `${layer.size}px ${layer.font}`;
-    c.textAlign = 'center';
-    c.textBaseline = 'middle';
-    if (layer.strokeWidth > 0) {
-      c.strokeStyle = layer.strokeColor;
-      c.lineWidth = layer.strokeWidth * 2;
-      c.lineJoin = 'round';
-      c.strokeText(layer.text, layer.x, layer.y);
-    }
-    c.fillStyle = layer.color;
-    c.fillText(layer.text, layer.x, layer.y);
-    if (i === selectedTextIdx) {
-      c.strokeStyle = '#c9a97a';
-      c.lineWidth = 1;
-      c.setLineDash([4, 3]);
-      const m = c.measureText(layer.text);
-      c.strokeRect(layer.x - m.width/2 - 8, layer.y - layer.size/2 - 4, m.width + 16, layer.size + 8);
-      c.setLineDash([]);
-    }
-    c.restore();
-  });
-}
-
-// ── Text controls ──
-function syncText() {
-  if (selectedTextIdx < 0 || selectedTextIdx >= textLayers.length) return;
-  const l = textLayers[selectedTextIdx];
-  l.text = document.getElementById('textInput').value || '文字';
-  l.font = document.getElementById('fontSelect').value;
-  l.size = +document.getElementById('fontSize').value;
-  l.color = document.getElementById('textColor').value;
-  l.strokeColor = document.getElementById('strokeColor').value;
-  l.strokeWidth = +document.getElementById('strokeWidth').value;
-  l.x = +document.getElementById('textX').value || Math.round(targetW/2);
-  l.y = +document.getElementById('textY').value || Math.round(targetH*0.85);
-  renderCanvas();
-  renderLayerList();
-}
-
-['textInput','fontSelect','fontSize','textColor','strokeColor','strokeWidth','textX','textY'].forEach(id => {
-  document.getElementById(id).addEventListener('input', syncText);
-});
-
-document.getElementById('fontSize').addEventListener('input', () => {
-  document.getElementById('fontSizeVal').textContent = document.getElementById('fontSize').value + 'px';
-});
-document.getElementById('padding').addEventListener('input', () => {
-  document.getElementById('paddingVal').textContent = document.getElementById('padding').value + 'px';
-});
-
-document.getElementById('addTextBtn').addEventListener('click', () => {
-  textLayers.push({ text: document.getElementById('textInput').value || '貼圖文字', font: document.getElementById('fontSelect').value, size: +document.getElementById('fontSize').value, color: document.getElementById('textColor').value, strokeColor: document.getElementById('strokeColor').value, strokeWidth: +document.getElementById('strokeWidth').value, x: Math.round(targetW/2), y: Math.round(targetH*0.85) });
-  selectedTextIdx = textLayers.length - 1;
-  renderLayerList();
-  renderCanvas();
-});
-
-document.getElementById('delTextBtn').addEventListener('click', () => {
-  if (selectedTextIdx < 0) return;
-  textLayers.splice(selectedTextIdx, 1);
-  selectedTextIdx = Math.min(selectedTextIdx, textLayers.length - 1);
-  renderLayerList();
-  renderCanvas();
-});
-
-function renderLayerList() {
-  const list = document.getElementById('layerList');
-  list.innerHTML = '';
-  textLayers.forEach((l, i) => {
-    const div = document.createElement('div');
-    div.className = 'layer-item' + (i === selectedTextIdx ? ' selected' : '');
-    const span = document.createElement('span'); span.textContent = 'T · ' + l.text.slice(0, 10);
-    div.appendChild(span);
-    const del = document.createElement('button'); del.className = 'layer-del'; del.textContent = '✕';
-    del.onclick = e => { e.stopPropagation(); textLayers.splice(i,1); if(selectedTextIdx>=textLayers.length) selectedTextIdx=textLayers.length-1; renderLayerList(); renderCanvas(); };
-    div.appendChild(del);
-    div.addEventListener('click', () => { selectedTextIdx=i; loadTextUI(i); renderLayerList(); renderCanvas(); });
-    list.appendChild(div);
-  });
-}
-
-function loadTextUI(i) {
-  const l = textLayers[i];
-  document.getElementById('textInput').value = l.text;
-  document.getElementById('fontSelect').value = l.font;
-  document.getElementById('fontSize').value = l.size;
-  document.getElementById('fontSizeVal').textContent = l.size + 'px';
-  document.getElementById('textColor').value = l.color;
-  document.getElementById('strokeColor').value = l.strokeColor;
-  document.getElementById('strokeWidth').value = l.strokeWidth;
-  document.getElementById('textX').value = l.x;
-  document.getElementById('textY').value = l.y;
-}
-
-// ── Canvas drag ──
-function getPos(e) {
-  const r = canvas.getBoundingClientRect();
-  return { x: (e.clientX - r.left) * canvas.width / r.width, y: (e.clientY - r.top) * canvas.height / r.height };
-}
-function hitTest(pos) {
-  for (let i = textLayers.length - 1; i >= 0; i--) {
-    const l = textLayers[i];
-    ctx.font = `${l.size}px ${l.font}`;
-    const w = ctx.measureText(l.text).width + 16, h = l.size + 8;
-    if (pos.x >= l.x-w/2 && pos.x <= l.x+w/2 && pos.y >= l.y-h/2 && pos.y <= l.y+h/2) return i;
-  }
-  return -1;
-}
-canvas.addEventListener('mousedown', e => { const pos = getPos(e); const hit = hitTest(pos); if (hit >= 0) { selectedTextIdx=hit; isDragging=true; dragOX=pos.x-textLayers[hit].x; dragOY=pos.y-textLayers[hit].y; loadTextUI(hit); renderLayerList(); renderCanvas(); } });
-canvas.addEventListener('mousemove', e => { if (!isDragging || selectedTextIdx < 0) return; const pos = getPos(e); textLayers[selectedTextIdx].x=Math.round(pos.x-dragOX); textLayers[selectedTextIdx].y=Math.round(pos.y-dragOY); document.getElementById('textX').value=textLayers[selectedTextIdx].x; document.getElementById('textY').value=textLayers[selectedTextIdx].y; renderCanvas(); });
-canvas.addEventListener('mouseup', () => isDragging = false);
-canvas.addEventListener('mouseleave', () => isDragging = false);
-canvas.addEventListener('touchstart', e => { const pos = getPos(e.touches[0]); const hit = hitTest(pos); if (hit >= 0) { selectedTextIdx=hit; isDragging=true; dragOX=pos.x-textLayers[hit].x; dragOY=pos.y-textLayers[hit].y; loadTextUI(hit); renderLayerList(); renderCanvas(); } }, { passive: true });
-canvas.addEventListener('touchmove', e => { if (!isDragging||selectedTextIdx<0) return; const pos=getPos(e.touches[0]); textLayers[selectedTextIdx].x=Math.round(pos.x-dragOX); textLayers[selectedTextIdx].y=Math.round(pos.y-dragOY); document.getElementById('textX').value=textLayers[selectedTextIdx].x; document.getElementById('textY').value=textLayers[selectedTextIdx].y; renderCanvas(); }, { passive: true });
-canvas.addEventListener('touchend', () => isDragging = false);
-
-renderCanvas();
+init();
 </script>
 </body>
 </html>
