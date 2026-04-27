@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -51,7 +52,6 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 .pill-drops{color:var(--pink);font-size:10px;font-weight:500}
 .recipe-note{margin-top:8px;font-size:11px;color:var(--gray);padding-top:7px;border-top:1px solid var(--cream-dark);line-height:1.6}
 .recipe-caution{margin-top:6px;font-size:11px;color:#9A7020;background:#FFF8E7;border-radius:8px;padding:6px 10px}
-/* Detail */
 .detail-view{display:none;position:fixed;inset:0;z-index:200;background:var(--cream);overflow-y:auto}
 .detail-view.open{display:block}
 .detail-header{background:var(--white);padding:14px 18px;display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--pink-pale);position:sticky;top:0;z-index:10}
@@ -76,7 +76,6 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 .bullet-list li::before{content:'·';position:absolute;left:0;color:var(--pink);font-size:18px;line-height:1.2}
 .warning-box{background:#FFF8E7;border-radius:10px;padding:10px 12px;border-left:3px solid #F0C84B;font-size:12px;color:#7A6520;line-height:1.7}
 .personal-note{background:var(--pink-pale);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--brown-mid);line-height:1.8;font-style:italic}
-/* Tips */
 .tip-card{background:var(--white);border-radius:16px;padding:14px;margin-bottom:9px;border:1px solid var(--pink-pale);box-shadow:0 2px 8px var(--shadow)}
 .tip-symptom{font-size:15px;font-weight:500;color:var(--brown);margin-bottom:4px}
 .tip-method{font-size:11px;color:var(--gray);margin-bottom:7px}
@@ -91,72 +90,85 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 .dilution-table th{background:var(--pink-pale);color:var(--brown);padding:6px 8px;text-align:center;white-space:nowrap}
 .dilution-table td{padding:5px 8px;text-align:center;border-bottom:1px solid var(--cream-dark);color:var(--brown-mid);white-space:nowrap}
 .conc-label{font-weight:500;color:var(--pink)}
-.calc-container{background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--pink-pale);margin-bottom:10px}
-.calc-frame{width:100%;border:none;min-height:600px;display:block}
 .section-header{font-size:11px;letter-spacing:3px;color:var(--gray);margin:16px 0 8px}
+
+/* 自製計算機 */
+.calc-card{background:var(–white);border-radius:20px;padding:20px;margin-bottom:10px;border:1px solid var(–pink-pale);box-shadow:0 2px 10px var(–shadow)}
+.calc-label{font-size:11px;letter-spacing:2px;color:var(–gray);margin-bottom:8px;display:block}
+.quick-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.quick-btn{padding:6px 14px;border-radius:20px;font-size:12px;border:1.5px solid var(–pink-soft);background:var(–white);color:var(–brown-mid);cursor:pointer;transition:all .2s;font-family:inherit}
+.quick-btn.selected{background:var(–pink);border-color:var(–pink);color:var(–white)}
+.calc-slider-wrap{margin-bottom:6px}
+.calc-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(–pink-pale);outline:none;cursor:pointer}
+.calc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(–pink);cursor:pointer;box-shadow:0 2px 6px rgba(212,165,165,.5)}
+.calc-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(–pink);cursor:pointer;border:none;box-shadow:0 2px 6px rgba(212,165,165,.5)}
+.calc-value-display{text-align:center;font-size:20px;font-weight:500;color:var(–pink);margin:4px 0 16px;font-family:‘Cormorant Garamond’,serif;letter-spacing:1px}
+.calc-divider{height:1px;background:var(–pink-pale);margin:6px 0 16px}
+.calc-result-box{background:linear-gradient(135deg,var(–pink-pale),var(–cream-dark));border-radius:16px;padding:18px;text-align:center}
+.calc-result-main{font-size:32px;font-weight:500;color:var(–pink);font-family:‘Cormorant Garamond’,serif;line-height:1.1}
+.calc-result-unit{font-size:13px;color:var(–brown-mid);margin-top:2px}
+.calc-result-sub{font-size:12px;color:var(–gray);margin-top:10px;line-height:1.6}
+.calc-result-hint{display:inline-block;margin-top:10px;padding:5px 14px;border-radius:20px;font-size:11px;background:var(–white);color:var(–pink);border:1px solid var(–pink-soft)}
+.calc-reset{width:100%;margin-top:14px;padding:11px;border:1.5px solid var(–pink-soft);border-radius:12px;background:none;font-family:inherit;font-size:13px;color:var(–gray);cursor:pointer}
+.calc-reset:active{background:var(–pink-pale)}
+
 /* FAB */
-.fab{position:fixed;bottom:94px;right:18px;width:50px;height:50px;border-radius:50%;background:var(--pink);border:none;box-shadow:0 4px 16px rgba(212,165,165,.5);font-size:24px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:50;transition:transform .2s}
+.fab{position:fixed;bottom:94px;right:18px;width:50px;height:50px;border-radius:50%;background:var(–pink);border:none;box-shadow:0 4px 16px rgba(212,165,165,.5);font-size:24px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:50;transition:transform .2s}
 .fab:active{transform:scale(.92)}
-/* Bottom Nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--pink-pale);display:flex;box-shadow:0 -2px 12px var(--shadow);z-index:100}
-.bnav-btn{flex:1;padding:10px 4px 14px;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;color:var(--gray-light);transition:color .2s;font-size:10px;letter-spacing:.5px}
-.bnav-btn.active{color:var(--pink)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(–white);border-top:1.5px solid var(–pink-pale);display:flex;box-shadow:0 -2px 12px var(–shadow);z-index:100}
+.bnav-btn{flex:1;padding:10px 4px 14px;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;color:var(–gray-light);transition:color .2s;font-size:10px;letter-spacing:.5px}
+.bnav-btn.active{color:var(–pink)}
 .bnav-btn .nav-icon{font-size:20px}
-/* Modal */
 .modal-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(92,74,66,.45);backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex;align-items:flex-end}
-.modal-sheet{background:var(--white);width:100%;border-radius:24px 24px 0 0;padding:18px 18px 40px;max-height:90vh;overflow-y:auto}
-.modal-handle{width:36px;height:4px;background:var(--gray-light);border-radius:2px;margin:0 auto 18px}
-.modal-title{font-size:16px;font-weight:500;margin-bottom:18px;color:var(--brown)}
+.modal-sheet{background:var(–white);width:100%;border-radius:24px 24px 0 0;padding:18px 18px 40px;max-height:90vh;overflow-y:auto}
+.modal-handle{width:36px;height:4px;background:var(–gray-light);border-radius:2px;margin:0 auto 18px}
+.modal-title{font-size:16px;font-weight:500;margin-bottom:18px;color:var(–brown)}
 .modal-options{display:flex;gap:10px}
-.modal-option{flex:1;background:var(--cream);border-radius:14px;padding:18px 10px;text-align:center;cursor:pointer;border:1.5px solid var(--pink-pale)}
-.modal-option:active{background:var(--pink-pale)}
+.modal-option{flex:1;background:var(–cream);border-radius:14px;padding:18px 10px;text-align:center;cursor:pointer;border:1.5px solid var(–pink-pale)}
+.modal-option:active{background:var(–pink-pale)}
 .modal-option-icon{font-size:26px;margin-bottom:6px}
-.modal-option-label{font-size:11px;color:var(--brown-mid)}
-/* Form */
+.modal-option-label{font-size:11px;color:var(–brown-mid)}
 .form-group{margin-bottom:14px}
-.form-label{font-size:11px;letter-spacing:1px;color:var(--gray);margin-bottom:5px;display:block}
-.form-input,.form-textarea,.form-select{width:100%;padding:10px 14px;border:1.5px solid var(--pink-soft);border-radius:12px;background:var(--cream);font-family:inherit;font-size:13px;color:var(--brown);outline:none}
-.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--pink);background:var(--white)}
+.form-label{font-size:11px;letter-spacing:1px;color:var(–gray);margin-bottom:5px;display:block}
+.form-input,.form-textarea,.form-select{width:100%;padding:10px 14px;border:1.5px solid var(–pink-soft);border-radius:12px;background:var(–cream);font-family:inherit;font-size:13px;color:var(–brown);outline:none}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(–pink);background:var(–white)}
 .form-textarea{resize:vertical;min-height:80px;line-height:1.6}
 .form-select{appearance:none;-webkit-appearance:none}
 .form-row{display:flex;gap:10px}.form-row .form-group{flex:1}
 .form-btn-row{display:flex;gap:10px;margin-top:4px}
-.btn-primary{flex:1;padding:13px;background:var(--pink);border:none;border-radius:14px;color:white;font-size:14px;font-family:inherit;cursor:pointer;font-weight:500}
-.btn-secondary{flex:1;padding:13px;background:var(--cream-dark);border:none;border-radius:14px;color:var(--brown-mid);font-size:14px;font-family:inherit;cursor:pointer}
-.img-upload-box{width:80px;height:80px;border-radius:14px;border:2px dashed var(--pink-soft);background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex-shrink:0}
+.btn-primary{flex:1;padding:13px;background:var(–pink);border:none;border-radius:14px;color:white;font-size:14px;font-family:inherit;cursor:pointer;font-weight:500}
+.btn-secondary{flex:1;padding:13px;background:var(–cream-dark);border:none;border-radius:14px;color:var(–brown-mid);font-size:14px;font-family:inherit;cursor:pointer}
+.img-upload-box{width:80px;height:80px;border-radius:14px;border:2px dashed var(–pink-soft);background:var(–cream);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex-shrink:0}
 .img-upload-box img{width:100%;height:100%;object-fit:cover}
-.upload-icon{font-size:22px;color:var(--gray-light)}
-.upload-label{font-size:9px;color:var(--gray-light);margin-top:2px}
-/* Confirm */
+.upload-icon{font-size:22px;color:var(–gray-light)}
+.upload-label{font-size:9px;color:var(–gray-light);margin-top:2px}
 .confirm-overlay{display:none;position:fixed;inset:0;z-index:400;background:rgba(92,74,66,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
 .confirm-overlay.open{display:flex}
-.confirm-box{background:var(--white);border-radius:20px;padding:24px;width:100%;max-width:320px;text-align:center}
+.confirm-box{background:var(–white);border-radius:20px;padding:24px;width:100%;max-width:320px;text-align:center}
 .confirm-icon{font-size:36px;margin-bottom:12px}
-.confirm-title{font-size:16px;font-weight:500;color:var(--brown);margin-bottom:8px}
-.confirm-msg{font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:20px}
+.confirm-title{font-size:16px;font-weight:500;color:var(–brown);margin-bottom:8px}
+.confirm-msg{font-size:13px;color:var(–gray);line-height:1.6;margin-bottom:20px}
 .confirm-btns{display:flex;gap:10px}
 .confirm-btns button{flex:1;padding:12px;border:none;border-radius:12px;font-family:inherit;font-size:13px;cursor:pointer}
-.confirm-cancel{background:var(--cream-dark);color:var(--brown-mid)}
-.confirm-delete{background:var(--red);color:white}
-/* Toast */
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--brown);color:white;padding:10px 20px;border-radius:20px;font-size:12px;opacity:0;transition:all .3s;z-index:500;pointer-events:none;white-space:nowrap}
+.confirm-cancel{background:var(–cream-dark);color:var(–brown-mid)}
+.confirm-delete{background:var(–red);color:white}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(–brown);color:white;padding:10px 20px;border-radius:20px;font-size:12px;opacity:0;transition:all .3s;z-index:500;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-/* Loading */
-.loading-screen{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+.loading-screen{position:fixed;inset:0;background:var(–cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
 .loading-screen.hidden{display:none}
 .loading-logo{font-size:36px}
-.loading-text{font-size:12px;color:var(--gray);letter-spacing:3px}
+.loading-text{font-size:12px;color:var(–gray);letter-spacing:3px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.spinner{width:24px;height:24px;border:2px solid var(--pink-pale);border-top-color:var(--pink);border-radius:50%;animation:spin .7s linear infinite}
-.empty-state{text-align:center;padding:40px 20px;color:var(--gray-light)}
+.spinner{width:24px;height:24px;border:2px solid var(–pink-pale);border-top-color:var(–pink);border-radius:50%;animation:spin .7s linear infinite}
+.empty-state{text-align:center;padding:40px 20px;color:var(–gray-light)}
 .empty-state-icon{font-size:36px;margin-bottom:10px}
 .empty-state-text{font-size:13px}
 </style>
+
 </head>
 <body>
 
-<!-- Loading -->
 <div class="loading-screen" id="loading-screen">
   <div class="loading-logo">🌿</div>
   <div class="spinner"></div>
@@ -169,6 +181,7 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 </div>
 
 <!-- 精油百科 -->
+
 <div id="page-oils" class="page active">
   <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" placeholder="搜尋精油名稱、功效…" oninput="filterOils(this.value)"></div>
   <div class="chips">
@@ -184,6 +197,7 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 </div>
 
 <!-- 配方集 -->
+
 <div id="page-recipes" class="page">
   <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" placeholder="搜尋配方名稱、用途…" oninput="filterRecipes(this.value)"></div>
   <div class="chips">
@@ -198,17 +212,20 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 </div>
 
 <!-- 使用技巧 -->
+
 <div id="page-tips" class="page">
+
   <div class="section-header">稀釋比例參考</div>
   <div class="dilution-section"><div class="ratio-grid">
-    <div class="ratio-row"><span class="ratio-label">👶🏻 嬰兒</span><span class="ratio-value">0.5 – 1%</span></div>
-    <div class="ratio-row"><span class="ratio-label">👧🏻 小孩 / 老人</span><span class="ratio-value">&lt; 1%</span></div>
+    <div class="ratio-row"><span class="ratio-label">👶 嬰兒</span><span class="ratio-value">0.5 – 1%</span></div>
+    <div class="ratio-row"><span class="ratio-label">🧒 小孩 / 老人</span><span class="ratio-value">&lt; 1%</span></div>
     <div class="ratio-row"><span class="ratio-label">🌸 臉部</span><span class="ratio-value">1 – 2%</span></div>
     <div class="ratio-row"><span class="ratio-label">🌿 一般芳療保養</span><span class="ratio-value">3%</span></div>
     <div class="ratio-row"><span class="ratio-label">🩹 療效 – 外傷</span><span class="ratio-value">5 – 10%</span></div>
     <div class="ratio-row"><span class="ratio-label">💊 療效 – 局部</span><span class="ratio-value">10%</span></div>
     <div class="ratio-row"><span class="ratio-label">🚨 急救</span><span class="ratio-value">&gt; 10%</span></div>
   </div></div>
+
   <div class="section-header">稀釋濃度表（精油滴數）</div>
   <div class="dilution-section"><div class="dilution-table-wrap">
     <table class="dilution-table">
@@ -228,8 +245,7 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
       </tbody>
     </table>
   </div></div>
-  <div class="section-header">精油濃度計算機</div>
-  <div class="calc-container"><iframe class="calc-frame" src="https://sherrywithlove.github.io/calculator/calculator.html" loading="lazy"></iframe></div>
+
   <div class="section-header">手部穴位按摩</div>
   <div class="tip-card"><div class="tip-symptom">🔴 鼻塞</div><div class="tip-method">由下而上按摩中指</div><div class="recipe-oils"><span class="recipe-oil-pill">Raven</span><span class="recipe-oil-pill">R.C.</span></div></div>
   <div class="tip-card"><div class="tip-symptom">😬 磨牙</div><div class="tip-method">由下而上按摩食指</div><div class="recipe-oils"><span class="recipe-oil-pill">Valor</span><span class="recipe-oil-pill">薰衣草</span></div></div>
@@ -237,6 +253,7 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
   <div class="tip-card"><div class="tip-symptom">🫁 氣管不適</div><div class="tip-method">按摩大拇指第一節</div><div class="recipe-oils"><span class="recipe-oil-pill">Raven</span><span class="recipe-oil-pill">R.C.</span></div></div>
   <div class="tip-card"><div class="tip-symptom">🔔 耳鳴</div><div class="tip-method">在手心上半部打圈</div><div class="recipe-oils"><span class="recipe-oil-pill">Helichrysum</span><span class="recipe-oil-pill">Purification</span></div></div>
   <div class="tip-card"><div class="tip-symptom">🌧️ 心情不佳</div><div class="tip-method">來回按摩手心上半部</div><div class="recipe-oils"><span class="recipe-oil-pill">Joy</span><span class="recipe-oil-pill">Stress Away</span></div></div>
+
   <div class="section-header">旅行必帶清單</div>
   <div class="tip-card">
     <div class="tip-symptom">✈️ 出門旅行推薦攜帶</div>
@@ -246,9 +263,49 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
     </div>
     <div class="recipe-note">人不舒服、痛、痠、心情低落 → 白使者先用上就對了</div>
   </div>
+
+  <div class="section-header">精油濃度計算機</div>
+  <div class="calc-card">
+    <span class="calc-label">容器容量（ml）</span>
+    <div class="quick-btns" id="vol-btns">
+      <button class="quick-btn" onclick="setVol(5,this)">5ml</button>
+      <button class="quick-btn" onclick="setVol(10,this)">10ml</button>
+      <button class="quick-btn" onclick="setVol(15,this)">15ml</button>
+      <button class="quick-btn" onclick="setVol(20,this)">20ml</button>
+      <button class="quick-btn" onclick="setVol(30,this)">30ml</button>
+      <button class="quick-btn" onclick="setVol(50,this)">50ml</button>
+    </div>
+    <div class="calc-slider-wrap">
+      <input class="calc-slider" type="range" min="1" max="100" value="10" id="vol-slider" oninput="onVolSlider(this.value)">
+    </div>
+    <div class="calc-value-display" id="vol-display">10 ml</div>
+    <div class="calc-divider"></div>
+    <span class="calc-label">稀釋濃度（%）</span>
+    <div class="quick-btns" id="conc-btns">
+      <button class="quick-btn" onclick="setConc(1,this)">1%</button>
+      <button class="quick-btn" onclick="setConc(2,this)">2%</button>
+      <button class="quick-btn" onclick="setConc(3,this)">3%</button>
+      <button class="quick-btn" onclick="setConc(5,this)">5%</button>
+      <button class="quick-btn" onclick="setConc(10,this)">10%</button>
+      <button class="quick-btn" onclick="setConc(15,this)">15%</button>
+    </div>
+    <div class="calc-slider-wrap">
+      <input class="calc-slider" type="range" min="1" max="30" value="3" step="0.5" id="conc-slider" oninput="onConcSlider(this.value)">
+    </div>
+    <div class="calc-value-display" id="conc-display">3 %</div>
+    <div class="calc-divider"></div>
+    <div class="calc-result-box">
+      <div class="calc-result-main" id="calc-drops">—</div>
+      <div class="calc-result-unit">滴精油</div>
+      <div class="calc-result-sub">基底油 <strong id="calc-base-ml">—</strong> ml</div>
+      <div class="calc-result-hint" id="calc-hint">請先選擇容量與濃度</div>
+    </div>
+    <button class="calc-reset" onclick="resetCalc()">↺ 重設</button>
+  </div>
 </div>
 
 <!-- Detail: 精油 -->
+
 <div class="detail-view" id="oil-detail">
   <div class="detail-header">
     <button class="back-btn" onclick="closeDetail('oil-detail')">←</button>
@@ -260,6 +317,7 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 </div>
 
 <!-- Detail: 配方 -->
+
 <div class="detail-view" id="recipe-detail">
   <div class="detail-header">
     <button class="back-btn" onclick="closeDetail('recipe-detail')">←</button>
@@ -272,7 +330,6 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 
 <button class="fab" onclick="openAddChoice()">＋</button>
 
-<!-- Add Choice -->
 <div class="modal-overlay" id="add-choice-modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -289,6 +346,7 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 </div>
 
 <!-- Oil Form -->
+
 <div class="modal-overlay" id="oil-form-modal" onclick="if(event.target===this)closeOilForm()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -328,6 +386,7 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
 </div>
 
 <!-- Recipe Form -->
+
 <div class="modal-overlay" id="recipe-form-modal" onclick="if(event.target===this)closeRecipeForm()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -353,7 +412,6 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
   </div>
 </div>
 
-<!-- Confirm -->
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
     <div class="confirm-icon">🗑️</div>
@@ -374,26 +432,95 @@ body{font-family:'Noto Serif JP','Noto Sans TC',serif;background:var(--cream);co
   <button class="bnav-btn" onclick="switchPage('tips',this)"><span class="nav-icon">💡</span>技巧</button>
 </div>
 
-<!-- Firebase -->
+<!-- 計算機 JS -->
+
+<script>
+// 計算機邏輯
+let calcVol=10, calcConc=3;
+
+const concHints=[
+  {max:1, label:'👶 嬰兒適用'},
+  {max:2, label:'🌸 臉部保養'},
+  {max:3, label:'🌿 一般芳療保養'},
+  {max:5, label:'🌿 日常護理'},
+  {max:10,label:'🩹 療效 – 外傷'},
+  {max:15,label:'💊 療效 – 局部'},
+  {max:99,label:'🚨 急救 / 短期使用'},
+];
+
+function getHint(c){
+  for(const h of concHints)if(c<=h.max)return h.label;
+  return '';
+}
+
+function calcUpdate(){
+  // 1 ml ≈ 20 滴精油
+  const drops=Math.round(calcVol * calcConc/100 * 20);
+  const baseMl=(calcVol*(1-calcConc/100)).toFixed(1);
+  document.getElementById('calc-drops').textContent=drops;
+  document.getElementById('calc-base-ml').textContent=baseMl;
+  document.getElementById('calc-hint').textContent=getHint(calcConc);
+  document.getElementById('vol-display').textContent=calcVol+' ml';
+  document.getElementById('conc-display').textContent=calcConc+' %';
+  document.getElementById('vol-slider').value=calcVol;
+  document.getElementById('conc-slider').value=calcConc;
+}
+
+window.setVol=function(v,el){
+  calcVol=v;
+  document.querySelectorAll('#vol-btns .quick-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  calcUpdate();
+};
+
+window.setConc=function(c,el){
+  calcConc=c;
+  document.querySelectorAll('#conc-btns .quick-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  calcUpdate();
+};
+
+window.onVolSlider=function(v){
+  calcVol=parseInt(v);
+  document.querySelectorAll('#vol-btns .quick-btn').forEach(b=>b.classList.remove('selected'));
+  calcUpdate();
+};
+
+window.onConcSlider=function(v){
+  calcConc=parseFloat(v);
+  document.querySelectorAll('#conc-btns .quick-btn').forEach(b=>b.classList.remove('selected'));
+  calcUpdate();
+};
+
+window.resetCalc=function(){
+  calcVol=10;calcConc=3;
+  document.querySelectorAll('.quick-btn').forEach(b=>b.classList.remove('selected'));
+  calcUpdate();
+};
+
+// 初始計算
+calcUpdate();
+</script>
+
+<!-- Firebase Module -->
+
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, setDoc, deleteDoc, doc, onSnapshot, orderBy, query }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAFGSQOvAp1thZkWBZ-nLHe-uR8llDQDI8",
-  authDomain: "home-hub-be41f.firebaseapp.com",
-  projectId: "home-hub-be41f",
-  storageBucket: "home-hub-be41f.firebasestorage.app",
-  messagingSenderId: "286497032414",
-  appId: "1:286497032414:web:16d3f0242a400d0de85a4f"
+const firebaseConfig={
+  apiKey:"AIzaSyAFGSQOvAp1thZkWBZ-nLHe-uR8llDQDI8",
+  authDomain:"home-hub-be41f.firebaseapp.com",
+  projectId:"home-hub-be41f",
+  storageBucket:"home-hub-be41f.firebasestorage.app",
+  messagingSenderId:"286497032414",
+  appId:"1:286497032414:web:16d3f0242a400d0de85a4f"
 };
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// ── Cloudinary ──
-const CLOUD='dxd5ijwof', PRESET='ml_default';
+const CLOUD='dxd5ijwof',PRESET='ml_default';
 async function uploadImg(file){
   const fd=new FormData();fd.append('file',file);fd.append('upload_preset',PRESET);
   const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`,{method:'POST',body:fd});
@@ -401,7 +528,6 @@ async function uploadImg(file){
   if(!data.secure_url)throw new Error('upload failed');
   return data.secure_url;
 }
-
 window.uploadOilImg=async function(input){
   const file=input.files[0];if(!file)return;
   const box=document.getElementById('oil-img-box');
@@ -409,31 +535,18 @@ window.uploadOilImg=async function(input){
   try{
     const url=await uploadImg(file);
     box.innerHTML=`<img src="${url}">`;box.dataset.url=url;showToast('圖片上傳成功 ✓');
-  }catch{
-    box.innerHTML=`<div class="upload-icon">📷</div><div class="upload-label">重試</div>`;
-    showToast('上傳失敗，請重試');
-  }
+  }catch{box.innerHTML=`<div class="upload-icon">📷</div><div class="upload-label">重試</div>`;showToast('上傳失敗，請重試');}
 };
 
-// ── State ──
-let oils=[], recipes=[];
-let oilTypeFilter='all', recipeTypeFilter='all';
+let oils=[],recipes=[];
+let oilTypeFilter='all',recipeTypeFilter='all';
 
-// ── Helpers ──
 function tc(t){if(['情緒','睡眠'].includes(t))return 'blue';if(['生理','呼吸','疼痛'].includes(t))return 'green';return '';}
 function sec(title,content){return `<div class="section"><div class="section-title">${title}</div>${content}</div>`;}
 function pill(o){return `<span class="recipe-oil-pill">${o.n}${o.d?`<span class="pill-drops"> ${o.d}</span>`:''}</span>`;}
-function setBtnLoading(id,loading){
-  const btn=document.getElementById(id);
-  btn.disabled=loading;btn.textContent=loading?'儲存中…':'儲存';
-}
+function setBtnLoading(id,loading){const btn=document.getElementById(id);btn.disabled=loading;btn.textContent=loading?'儲存中…':'儲存';}
+window.showToast=function(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);};
 
-window.showToast=function(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-};
-
-// ── Render ──
 function renderOils(list){
   const c=document.getElementById('oils-list');
   if(!list.length){c.innerHTML=`<div class="empty-state"><div class="empty-state-icon">🌿</div><div class="empty-state-text">找不到相關精油</div></div>`;return;}
@@ -460,7 +573,6 @@ function renderRecipes(list){
   </div>`).join('');
 }
 
-// ── Filters ──
 function getFilteredOils(q=''){
   let l=[...oils];
   if(oilTypeFilter!=='all')l=l.filter(o=>o.type===oilTypeFilter||(o.tags||[]).includes(oilTypeFilter));
@@ -478,7 +590,6 @@ window.filterRecipes=q=>renderRecipes(getFilteredRecipes(q));
 window.filterByType=(t,el)=>{oilTypeFilter=t;document.querySelectorAll('#page-oils .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');filterOils(document.querySelector('#page-oils .search-input').value);};
 window.filterRecipeType=(t,el)=>{recipeTypeFilter=t;document.querySelectorAll('#page-recipes .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');filterRecipes(document.querySelector('#page-recipes .search-input').value);};
 
-// ── Detail ──
 window.openOilDetail=function(id){
   const o=oils.find(x=>x.id===id);if(!o)return;
   document.getElementById('detail-name').textContent=o.name;
@@ -487,8 +598,7 @@ window.openOilDetail=function(id){
   document.getElementById('oil-del-btn').onclick=()=>confirmDelete('oil',id,o.name);
   let h=`<div class="detail-hero">`;
   h+=o.img?`<img class="detail-hero-img" src="${o.img}" alt="${o.name}">`:`<div class="detail-hero-icon">${o.icon||'🌿'}</div>`;
-  h+=`<div class="detail-hero-name">${o.name}</div>
-  <div class="detail-hero-en">${o.en||''}</div>
+  h+=`<div class="detail-hero-name">${o.name}</div><div class="detail-hero-en">${o.en||''}</div>
   <div class="detail-hero-badges"><span class="tag">${o.type||'單方'}</span>${(o.tags||[]).map(t=>`<span class="tag ${tc(t)}">${t}</span>`).join('')}</div></div>`;
   if(o.alias)h+=sec('🏷 別名',`<div class="section-content">${o.alias}</div>`);
   if(o.story)h+=sec('🌿 小故事',`<div class="section-content">${o.story}</div>`);
@@ -521,7 +631,6 @@ window.openRecipeDetail=function(id){
 
 window.closeDetail=id=>document.getElementById(id).classList.remove('open');
 
-// ── Oil Form ──
 window.openOilForm=function(editId=null){
   const box=document.getElementById('oil-img-box');
   if(editId){
@@ -565,9 +674,8 @@ window.saveOil=async function(){
     name,en:document.getElementById('oil-en').value.trim(),
     type:document.getElementById('oil-type').value,
     alias:document.getElementById('oil-alias').value.trim(),
-    icon:'🌿',img:imgUrl,tags,
+    icon:'🌿',img:imgUrl,tags,ingredients:ing,
     story:document.getElementById('oil-story').value.trim(),
-    ingredients:ing,
     physical:document.getElementById('oil-physical').value.split('\n').map(s=>s.trim()).filter(Boolean),
     emotional:document.getElementById('oil-emotional').value.split('\n').map(s=>s.trim()).filter(Boolean),
     usage:document.getElementById('oil-usage').value.split('\n').map(s=>s.trim()).filter(Boolean),
@@ -583,7 +691,6 @@ window.saveOil=async function(){
   setBtnLoading('oil-save-btn',false);
 };
 
-// ── Recipe Form ──
 window.addOilRow=function(n='',d=''){
   const wrap=document.getElementById('recipe-oils-list');
   const row=document.createElement('div');
@@ -645,7 +752,6 @@ window.saveRecipe=async function(){
   setBtnLoading('recipe-save-btn',false);
 };
 
-// ── Delete ──
 window.confirmDelete=function(type,id,name){
   closeDetail('oil-detail');closeDetail('recipe-detail');
   document.getElementById('confirm-msg').textContent=`「${name}」刪除後無法復原`;
@@ -654,15 +760,11 @@ window.confirmDelete=function(type,id,name){
 };
 async function doDelete(type,id){
   const col=type==='oil'?'aroma_oils':'aroma_recipes';
-  try{
-    await deleteDoc(doc(db,col,id));
-    showToast(type==='oil'?'精油已刪除':'配方已刪除');
-  }catch(e){showToast('刪除失敗：'+e.message);}
+  try{await deleteDoc(doc(db,col,id));showToast(type==='oil'?'精油已刪除':'配方已刪除');}
+  catch(e){showToast('刪除失敗：'+e.message);}
   closeConfirm();
 }
 window.closeConfirm=()=>document.getElementById('confirm-overlay').classList.remove('open');
-
-// ── Page Switch ──
 window.switchPage=function(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
@@ -671,35 +773,33 @@ window.switchPage=function(name,el){
 };
 window.openAddChoice=()=>document.getElementById('add-choice-modal').classList.add('open');
 
-// ── Firebase realtime listeners ──
 function listenOils(){
   const q=query(collection(db,'aroma_oils'),orderBy('createdAt','asc'));
   onSnapshot(q,snap=>{
     oils=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderOils(getFilteredOils(document.querySelector('#page-oils .search-input').value));
-  },err=>console.error('oils:',err));
+  },err=>console.error('oils listener:',err));
 }
 function listenRecipes(){
   const q=query(collection(db,'aroma_recipes'),orderBy('createdAt','asc'));
   onSnapshot(q,snap=>{
     recipes=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderRecipes(getFilteredRecipes(document.querySelector('#page-recipes .search-input').value));
-  },err=>console.error('recipes:',err));
+  },err=>console.error('recipes listener:',err));
 }
 
-// ── Seed initial data if empty ──
 async function seedIfEmpty(){
   const snap=await getDocs(collection(db,'aroma_oils'));
-  if(!snap.empty)return; // 已有資料就不 seed
+  if(!snap.empty)return;
   const now=Date.now();
   const seedOils=[
-    {name:'天竺葵',en:'Geranium',type:'單方',icon:'🌺',img:'',alias:'',tags:['皮膚','情緒','生理'],story:'天竺葵有翻人的玫瑰之稱，適合各種皮膚，特別是油性肌膚和痘痘型肌膚。',ingredients:[],physical:['能深層潔膚，平衡皮脂分泌，促進皮膚細胞新生並修復疤痕','改善經前症候群、更年期問題（沮喪、陰道乾澀、經血過多）','強化循環系統，具利尿特性，可幫助肝、腎排毒，改善水份滯留症狀','對濕疹、灼傷、帶狀皰疹、皰疹、癬及凍瘡有益','有很好殺菌能力及收斂和止血效果，適合治療創傷、幫助傷口復原'],emotional:['放開因害怕失去而產生的掌控慾，恢復內心的柔軟與安定','助人不在糾結於現況，提振精神且平衡情緒','幫助克服在大眾面前講話的恐懼'],usage:[],caution:['能調節荷爾蒙，懷孕期間要謹慎使用'],note:'',createdAt:now},
-    {name:'淨化',en:'Purification',type:'複方',icon:'✨',img:'',alias:'斷捨離的能量',tags:['情緒','空間','生理'],story:'結合具有去味功能的精油，能夠為環境中帶來清新、乾淨的香氣。別名：斷捨離的能量。',ingredients:['醒目薰衣草','檸檬香茅','迷迭香','香桃木','茶樹'],physical:['蚊蟲叮咬、驅趕蚊蟲','醒腦提神','乾咳、喉嚨痛、扁桃腺炎、中耳炎','增強免疫系統','傷口或昆蟲咬傷部位消毒'],emotional:['在房間中進行擴散淨化，清除負面情緒和振動','在充滿衝突的空間中噴一些'],usage:['局部範圍可以直接使用純精油','平日保養請加V6植物油稀釋'],caution:['EarthKosher猶太潔食認證'],note:'別名「斷捨離的能量」。下意圖：我要淨化我所有的能量與情緒。',createdAt:now+1},
-    {name:'R.C.（樂吸）',en:'R.C.',type:'複方',icon:'🌬️',img:'',alias:'',tags:['呼吸','生理'],story:'有助打通呼吸道，擴香時散出令人愉快的香氣，有助保持積極性。',ingredients:['Copaiba','尤加利（三種）','香桃木','黑雲杉','薄荷','薰衣草','松樹','馬鬱蘭','絲柏'],physical:['舒緩感冒症狀、咳嗽','鼻塞、過敏','支氣管炎、鼻竇炎','有助維持健康的鼻竇和肺功能','運動前使用能提升意識','減輕打鼻鼾情況'],emotional:['擴香時散出令人愉快的香氣，有助保持積極性'],usage:['用V6基底油稀釋精油','擴香、加濕、直接吸入或塗抹在胸部、頭部、喉嚨處'],caution:[],note:'',createdAt:now+2},
+    {name:'天竺葵',en:'Geranium',type:'單方',icon:'🌺',img:'',alias:'',tags:['皮膚','情緒','生理'],story:'天竺葵有翻人的玫瑰之稱，適合各種皮膚，特別是油性肌膚和痘痘型肌膚。',ingredients:[],physical:['能深層潔膚，平衡皮脂分泌，促進皮膚細胞新生並修復疤痕','改善經前症候群、更年期問題','強化循環系統，可幫助肝、腎排毒','對濕疹、灼傷、帶狀皰疹、皰疹有益','有很好殺菌能力及收斂和止血效果'],emotional:['放開因害怕失去而產生的掌控慾，恢復內心的柔軟與安定','助人不在糾結於現況，提振精神且平衡情緒','幫助克服在大眾面前講話的恐懼'],usage:[],caution:['能調節荷爾蒙，懷孕期間要謹慎使用'],note:'',createdAt:now},
+    {name:'淨化',en:'Purification',type:'複方',icon:'✨',img:'',alias:'斷捨離的能量',tags:['情緒','空間','生理'],story:'結合具有去味功能的精油，能夠為環境中帶來清新、乾淨的香氣。',ingredients:['醒目薰衣草','檸檬香茅','迷迭香','香桃木','茶樹'],physical:['蚊蟲叮咬、驅趕蚊蟲','醒腦提神','乾咳、喉嚨痛、扁桃腺炎、中耳炎','增強免疫系統'],emotional:['清除負面情緒和振動','在充滿衝突的空間中使用'],usage:['局部範圍可以直接使用純精油','平日保養請加V6植物油稀釋'],caution:['EarthKosher猶太潔食認證'],note:'別名「斷捨離的能量」。下意圖：我要淨化我所有的能量與情緒。',createdAt:now+1},
+    {name:'R.C.（樂吸）',en:'R.C.',type:'複方',icon:'🌬️',img:'',alias:'',tags:['呼吸','生理'],story:'有助打通呼吸道，擴香時散出令人愉快的香氣，有助保持積極性。',ingredients:['Copaiba','尤加利（三種）','香桃木','黑雲杉','薄荷','薰衣草','松樹','馬鬱蘭','絲柏'],physical:['舒緩感冒症狀、咳嗽','鼻塞、過敏','支氣管炎、鼻竇炎','減輕打鼻鼾情況'],emotional:['有助保持積極性'],usage:['用V6基底油稀釋精油','擴香或塗抹在胸部、喉嚨處'],caution:[],note:'',createdAt:now+2},
     {name:'Joy（喜悅）',en:'Joy',type:'複方',icon:'💗',img:'',alias:'',tags:['情緒','皮膚'],story:'Joy 是一款奢華的具有異國情調的提神複方油，可以令人心情愉快。',ingredients:['天竺葵','茉莉','羅馬甘菊','花梨木','玫瑰草','玫瑰','檸檬','佛手柑','柑橘','依蘭'],physical:[],emotional:['日常香水','自信與魅力','浪漫時刻'],usage:[],caution:[],note:'',createdAt:now+3},
     {name:'薰衣草',en:'Lavender',type:'單方',icon:'💜',img:'',alias:'',tags:['皮膚','情緒','睡眠'],story:'最萬用的精油之一，助眠、舒緩、皮膚護理、情緒平衡。',ingredients:[],physical:['助眠','皮膚護理','舒緩各種不適'],emotional:['情緒平衡','放鬆神經'],usage:[],caution:[],note:'',createdAt:now+4},
     {name:'薄荷',en:'Peppermint',type:'單方',icon:'🌿',img:'',alias:'',tags:['生理','呼吸'],story:'清涼提神，消化、頭痛舒緩、提神。',ingredients:[],physical:['提神','清涼','幫助消化','舒緩頭痛'],emotional:[],usage:[],caution:['嬰幼兒避免直接使用'],note:'',createdAt:now+5},
-    {name:'冬青',en:'Wintergreen',type:'單方',icon:'🍃',img:'',alias:'',tags:['生理','疼痛'],story:'具有刺激、消炎、鎮痛等功效，可促進局部血液循環。',ingredients:[],physical:['刺激、消炎、鎮痛','促進局部血液循環','用於急性風濕性關節炎、腰痛、肌肉痛、神經痛','有止癢的功效','殺菌、利尿'],emotional:[],usage:['消除橘皮組織按摩：冬青2＋杜松2＋迷迭香2＋植物油10ML','去疤胞：冬青1＋薰衣草1＋檸檬1＋植物油6滴'],caution:['成人濃度稀釋2-3%','嬰幼兒、孕婦濃度0.5-1%','孕婦及癲癇患者禁用'],note:'',createdAt:now+6},
+    {name:'冬青',en:'Wintergreen',type:'單方',icon:'🍃',img:'',alias:'',tags:['生理','疼痛'],story:'具有刺激、消炎、鎮痛等功效，可促進局部血液循環。',ingredients:[],physical:['刺激、消炎、鎮痛','促進局部血液循環','用於風濕性關節炎、腰痛、肌肉痛','殺菌、利尿'],emotional:[],usage:['消除橘皮組織：冬青2＋杜松2＋迷迭香2＋植物油10ML','去疤胞：冬青1＋薰衣草1＋檸檬1＋植物油6滴'],caution:['成人濃度稀釋2-3%','嬰幼兒、孕婦濃度0.5-1%','孕婦及癲癇患者禁用'],note:'',createdAt:now+6},
     {name:'玫瑰草',en:'Palmarosa',type:'單方',icon:'🌹',img:'',alias:'',tags:['皮膚','情緒'],story:'玫瑰草又稱為印度天竺葵或薑草，擴香使用時可增添平靜和諧的氣息，使情緒平穩。',ingredients:[],physical:[],emotional:['增添平靜和諧的氣息','使情緒平穩'],usage:[],caution:[],note:'',createdAt:now+7},
     {name:'苦配巴',en:'Copaiba',type:'單方',icon:'🤎',img:'',alias:'',tags:['生理','疼痛'],story:'來自南美洲的樹脂精油，具有強大的消炎和鎮痛效果。',ingredients:[],physical:['消炎','鎮痛','支持免疫系統'],emotional:[],usage:[],caution:[],note:'',createdAt:now+8},
   ];
@@ -707,7 +807,7 @@ async function seedIfEmpty(){
 
   const snapR=await getDocs(collection(db,'aroma_recipes'));
   if(!snapR.empty)return;
-  const seedRecipes=[
+  const sr=[
     {name:'毛衣暖暖',purpose:'冬季暖意',method:'擴香',category:'擴香',oils:[{n:'甜橙',d:'4滴'},{n:'乳香',d:'4滴'},{n:'生薑',d:'1滴'}],note:'冬天在家擴香，帶來溫暖舒適感',caution:'',createdAt:now},
     {name:'夏日假期',purpose:'清新夏日',method:'擴香',category:'擴香',oils:[{n:'薰衣草',d:'4滴'},{n:'檸檬',d:'3滴'},{n:'檸檬香茅',d:'1滴'}],note:'',caution:'',createdAt:now+1},
     {name:'PSK 呼吸暢順',purpose:'暢通呼吸道',method:'擴香',category:'擴香',oils:[{n:'薄荷',d:'3滴'},{n:'苦配巴',d:'2滴'},{n:'樂C複方',d:'3滴'}],note:'100ml水＋精油，按空間大小調整',caution:'',createdAt:now+2},
@@ -728,15 +828,23 @@ async function seedIfEmpty(){
     {name:'自在好壯壯呼吸膏（配方二）',purpose:'呼吸道保健膏',method:'膏體',category:'膏體',oils:[{n:'羅文沙葉'},{n:'尤加利'},{n:'杜松'},{n:'馬鬱蘭'},{n:'玫瑰（可加）'},{n:'苦橙葉（可加）'}],note:'依照目前有哪些精油來選擇配方',caution:'',createdAt:now+17},
     {name:'推薦東西秘方',purpose:'推薦助力',method:'塗抹',category:'情緒',oils:[{n:'相信'},{n:'豐碩'}],note:'使用時想著對方，有助推薦氛圍',caution:'',createdAt:now+18},
   ];
-  for(const r of seedRecipes)await addDoc(collection(db,'aroma_recipes'),r);
+  for(const r of sr)await addDoc(collection(db,'aroma_recipes'),r);
 }
 
-// ── Init ──
 async function init(){
   try{
     await seedIfEmpty();
     listenOils();
     listenRecipes();
   }catch(e){
-    console.error('init error:',e);
+    console.error('init:',e);
     showToast('連線失敗，請重新整理');
+  }finally{
+    document.getElementById('loading-screen').classList.add('hidden');
+  }
+}
+init();
+</script>
+
+</body>
+</html>
